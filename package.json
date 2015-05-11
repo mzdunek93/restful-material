@@ -1,0 +1,67 @@
+{
+  "name": "rest-reflux",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/rest-reflux.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:asok/rest-reflux.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "nodemon -w __tests__ -w ./src -e js,jsx -x npm test",
+    "build": "webpack -p"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+    "testFileExtensions": [
+      "es6",
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "es6",
+      "jsx"
+    ],
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/*"
+    ]
+  },
+  "keywords": [
+    "framework",
+    "rest",
+    "materialui",
+    "react",
+    "react-reflux",
+    "rest"
+  ],
+  "author": "asok",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asok/rest-reflux/issues"
+  },
+  "homepage": "https://github.com/asok/rest-reflux",
+  "devDependencies": {
+    "babel-jest": "~4.0.0",
+    "fakexmlhttprequest": "0.0.1",
+    "jest-cli": "^0.4.2",
+    "nodemon": "^1.3.7",
+    "pprint": "0.0.1"
+  },
+  "dependencies": {
+    "babel-core": "~4.4.3",
+    "babel-loader": "~4.0.0",
+    "css-loader": "~0.9.1",
+    "style-loader": "~0.9.0",
+    "webpack": "~1.5.3",
+    "html-webpack-plugin": "~1.2.0",
+    "react": "~0.13.0",
+    "react-tap-event-plugin": "~0.1.4",
+    "reflux": "~0.2.7",
+    "material-ui": "~0.7.5",
+    "less": "~2.4.0",
+    "less-loader": "~2.2.0",
+    "underscore": "~1.8.3"
+  }
+}
