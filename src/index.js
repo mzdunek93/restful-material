@@ -1,5 +1,6 @@
-import Ajax from './back/ajax';
-import Model from './back/model';
+import Ajax from './back/Ajax';
+import Model from './back/Model';
+import Intl from './back/Intl';
 import Buttons from './front/Buttons';
 import CountriesDropDownMenu from './front/CountriesDropDownMenu';
 import RestDatePicker from './front/RestDatePicker';
@@ -11,6 +12,7 @@ import Table from './front/Table';
 
 module.exports = {
   Ajax: Ajax,
+  Intl: Intl,
   Model: Model,
   Buttons: Buttons,
   CountriesDropDownMenu: CountriesDropDownMenu,

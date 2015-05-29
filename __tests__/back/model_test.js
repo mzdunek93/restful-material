@@ -1,10 +1,12 @@
+/*eslint-env jasmine */
+
 jest.dontMock('../../src/back/model');
 
 import Model from "../../src/back/model"
 
 describe('Model', () => {
   beforeEach(() => {
-    model = new Model({foo: 'bar'});
+    model = new Model({foo: 'bar'}); /*global model */
   })
 
   describe('costructing', () => {
@@ -54,6 +56,39 @@ describe('Model', () => {
     it('stores the passed map', () => {
       model.errors['name'] = ['Is missing']
       expect(model.errorMessages()).toEqual(['name: Is missing']);
+    })
+  })
+
+  describe('isBlank', () => {
+    it('returns true if the attribute is null', () => {
+      model.set('bar', null)
+      expect(model.isBlank('bar')).toBe(true);
+    })
+
+    it('returns true if the attribute is undefined', () => {
+      expect(model.isBlank('bar')).toBe(true);
+    })
+
+    it('returns true if the attribute is an empty string', () => {
+      model.set('bar', '')
+      expect(model.isBlank('bar')).toBe(true);
+    })
+
+    it('returns false if the attribute is set', () => {
+      model.set('bar', 'a value')
+      expect(model.isBlank('bar')).toBe(false);
+    })
+  })
+
+  describe('setDefault', () => {
+    it('it sets a value when the attribute is blank', () => {
+      model.setDefault('bar', 'a value')
+      expect(model.get('bar')).toEqual('a value');
+    })
+
+    it('it sets a value when the attribute is blank', () => {
+      model.setDefault('foo', 'a value')
+      expect(model.get('bar')).toNotEqual('a value');
     })
   })
 })

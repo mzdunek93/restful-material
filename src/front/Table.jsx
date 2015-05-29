@@ -35,23 +35,23 @@ var Controls = React.createClass({
   render() {
     var pageLinks = _.range(this.props.count / this.props.perPage).map(function(i){
       var style = {textDecoration: 'none', color: 'inherit'};
-      if(i == this.props.page)
+      if(i === this.props.page)
         style.fontWeight = 'bold',
         style.color = '#ff4081'
 
-      return(
+      return (
         <span>
           <a href="#"
-             key={"a"+i}
+             key={"a" + i}
              style={style}
              onClick={function(e){this.pageChange(e, i)}.bind(this)}>
-            {i+1}
+            {i + 1}
           </a>
         </span>
       )
     }.bind(this))
 
-    return(
+    return (
       <Toolbar className="mui-toolbar-sort">
         <ToolbarGroup key={0} float="left" >
           {pageLinks}
@@ -67,7 +67,7 @@ var Controls = React.createClass({
         </ToolbarGroup>
       </Toolbar>
     )
-  },
+  }
 });
 
 var Table = React.createClass({
@@ -76,22 +76,21 @@ var Table = React.createClass({
     resources: React.PropTypes.array.isRequired
   },
 
-  getDefaultProp() {
+  getDefaultProps() {
     return {
       pendingMessage: "Loading..."
-    };
+    }
   },
 
   getInitialState() {
     return {page: 0, perPage: 5, filtered: this.props.resources};
   },
 
-  resources() {
+  resources(resources) {
     // if filtered is not yet set resort to this.props.resources
-    var resources = this.state.filtered || this.props.resources,
-        start = this.state.page * this.state.perPage,
+    var start = this.state.page * this.state.perPage,
         out = [];
-    if(start >= (resources.length - 1))
+    if(start > (resources.length - 1))
       start = resources.length - this.state.perPage;
     if(start < 0)
       start = 0;
@@ -111,28 +110,30 @@ var Table = React.createClass({
   },
 
   thead() {
-    return(
+    return (
       <tr>
-        {_.keys(this.props.spec).map((h, i)=> <th key={i}>{h}</th>)}
+        {_.keys(this.props.spec).map((h, i)=>
+          <th key={i}>{h}</th>)}
       </tr>
     );
   },
 
-  tbody() {
-    if(this.props.resources)
-      return this.resources().map((r, i)=>{
+  tbody(resources) {
+    if(resources)
+      return this.resources(resources).map((r, i)=>{
         var row = [];
-        Object.keys(this.props.spec).map((title, j)=>{
+        Object.keys(this.props.spec).map((title)=>{
           var val = this.props.spec[title];
           if(_.isFunction(val))
-            row.push(val.bind(this)(r, title, j));// bind 'this' to have router
+            // bind 'this' to have router
+            row.push(this.wrapInTd(val.bind(this)(r, i), title, 'cell-with-button'))
           else
-            row.push(<td data-title={title}>{r.get(val)}</td>);
+            row.push(this.wrapInTd(r.get(val), title))
         });
         return <tr key={i}>{row}</tr>;
       });
     else
-      return(
+      return (
         <tr>
           <td colSpan={Object.keys(this.props.spec).length}>
             {this.props.pendingMessage}
@@ -141,10 +142,18 @@ var Table = React.createClass({
       )
   },
 
+  wrapInTd(html, title, className = '') {
+    return (
+      <td data-title={title} className={className}>
+        {html}
+      </td>
+    )
+  },
+
   filteredResources(filterName, filterValue) {
     var resources = this.props.resources,
-        filterValue = filterValue.toString().toLowerCase(),
         out = [];
+    filterValue = filterValue.toString().toLowerCase();
 
     for(var i = 0; i < resources.length; i++){
       var val = resources[i].get(this.props.spec[filterName]);
@@ -164,11 +173,11 @@ var Table = React.createClass({
   filters() {
     return (
       <tr>
-        {Object.keys(this.props.spec).map((title, j)=>{
+        {Object.keys(this.props.spec).map((title)=> {
           if(_.isFunction(this.props.spec[title]))
             return <th data-title={title}></th>;
           else
-            return(
+            return (
               <th data-title={title}>
                 <TextField ref={title}
                            className="table-filter"
@@ -180,11 +189,11 @@ var Table = React.createClass({
     );
   },
 
-  controls() {
-    if(this.state.resources)
+  controls(resources) {
+    if(resources && resources.length > this.state.perPage)
       return <Controls onPageChange={this.pageChange}
                        onPerPageChange={this.perPageChange}
-                       count={this.state.filtered.length}
+                       count={resources.length}
                        page={this.state.page}
                        perPage={this.state.perPage} />;
     else
@@ -192,7 +201,9 @@ var Table = React.createClass({
   },
 
   render() {
-    return(
+    var resources = this.state.filtered || this.props.resources;
+
+    return (
       <div className="table-responsive-vertical shadow-z-1">
         <table className="table table-hover table-mc-light-blue table-with-filters">
           <thead>
@@ -200,10 +211,10 @@ var Table = React.createClass({
             {this.filters()}
           </thead>
           <tbody>
-            {this.tbody()}
+            {this.tbody(resources)}
           </tbody>
         </table>
-        {this.controls()}
+        {this.controls(resources)}
       </div>
 
     )

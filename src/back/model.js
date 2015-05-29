@@ -39,6 +39,16 @@ class Model {
     })
     return messages;
   }
-};
+
+  isBlank(attribute) {
+    var value = this.get(attribute);
+    return _.isNull(value) || _.isUndefined(value) || value === '';
+  }
+
+  setDefault(attribute, value) {
+    if(this.isBlank(attribute))
+      this.set(attribute, value);
+  }
+}
 
 module.exports = Model;

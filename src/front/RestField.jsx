@@ -27,9 +27,8 @@ module.exports = React.createClass({
     return {
       value: this.state.value,
       requestChange: (value)=> {
-        console.log(value)
-          this.props.model.set(this.props.attribute, value);
-          this.setState({value: value})
+        this.props.model.set(this.props.attribute, value);
+        this.setState({value: value})
       }
     }
   },

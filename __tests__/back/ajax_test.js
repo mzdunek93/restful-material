@@ -1,3 +1,5 @@
+/*eslint-env jasmine */
+
 import fakeXhr from '../../node_modules/fakexmlhttprequest'
 
 var requests = []
@@ -18,7 +20,7 @@ import Ajax from '../../src/back/ajax';
 
 var requestExpectations = (run, method) => {
   beforeEach(() => {
-    ajax = new Ajax({url: 'http://nukomeet.com'})
+    ajax = new Ajax({url: 'http://nukomeet.com'}) /*global ajax*/
   })
 
   it('makes a request', () => {

@@ -1,16 +1,18 @@
 {
-  "name": "rest-reflux",
+  "name": "restful-material",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/rest-reflux.js",
+  "main": "./lib",
   "repository": {
     "type": "git",
-    "url": "git@github.com:asok/rest-reflux.git"
+    "url": "git@github.com:asok/restful-material.git"
   },
   "scripts": {
     "test": "jest",
     "test:watch": "nodemon -w __tests__ -w ./src -e js,jsx -x npm test",
-    "build": "webpack -p"
+    "prebuild": "rm -rf lib",
+    "build": "./node_modules/.bin/babel --stage 1 ./src --out-dir ./lib",
+    "build:watch": "nodemon -w ./src -e js,jsx -x npm run build"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
@@ -30,18 +32,16 @@
   },
   "keywords": [
     "framework",
-    "rest",
     "materialui",
     "react",
-    "react-reflux",
     "rest"
   ],
   "author": "asok",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/asok/rest-reflux/issues"
+    "url": "https://github.com/asok/restful-material/issues"
   },
-  "homepage": "https://github.com/asok/rest-reflux",
+  "homepage": "https://github.com/asok/restful-material",
   "devDependencies": {
     "babel-jest": "~4.0.0",
     "fakexmlhttprequest": "0.0.1",
@@ -50,18 +50,11 @@
     "pprint": "0.0.1"
   },
   "dependencies": {
-    "babel-core": "~4.4.3",
-    "babel-loader": "~4.0.0",
-    "css-loader": "~0.9.1",
-    "style-loader": "~0.9.0",
-    "webpack": "~1.5.3",
-    "html-webpack-plugin": "~1.2.0",
+    "babel": "^5.4.3",
     "react": "~0.13.0",
+    "react-intl": "~1.2.0",
     "react-tap-event-plugin": "~0.1.4",
-    "reflux": "~0.2.7",
     "material-ui": "~0.7.5",
-    "less": "~2.4.0",
-    "less-loader": "~2.2.0",
     "underscore": "~1.8.3"
   }
 }

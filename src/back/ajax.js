@@ -1,5 +1,3 @@
-import _ from "underscore";
-
 class Ajax {
   constructor(opts = {}) {
     if(opts.url)
@@ -15,32 +13,30 @@ class Ajax {
 
   runCallback(xhr, resolve, reject) {
     var callback = this.callbacks[xhr.status];
-    if(callback){
+    if(callback) {
       callback(xhr, this.context, resolve, reject)
       return true;
-    } else {
+    } else
       return false;
-    }
   }
 
   send(method, path, data) {
     return new Promise(
-      (resolve, reject)=>{
+      (resolve, reject)=> {
         var xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = () => {
-          if (xhr.readyState == XMLHttpRequest.OPENED) {
+          if (xhr.readyState === XMLHttpRequest.OPENED) {
             xhr.setRequestHeader("Content-Type",
                                  "application/json;charset=utf-8");
             this.beforeSend(xhr);
           }
 
-          if (xhr.readyState == XMLHttpRequest.DONE ) {
-            if(xhr.status == 200)
+          if (xhr.readyState === XMLHttpRequest.DONE)
+            if(xhr.status === 200)
               resolve(JSON.parse(xhr.responseText || '{}'));
             else
               this.runCallback(xhr, resolve, reject) || reject(xhr)
-          }
         }
         xhr.open(method, this.url + path, true);
 

@@ -10,13 +10,18 @@ module.exports = React.createClass({
     return this.getValue();
   },
 
+  onChange(e, selected) {
+    this.props.model.set(this.props.attribute, selected);
+  },
+
   render() {
-    var selected = this.props.resource.get(this.props.attribute);
+    var selected = this.props.model.get(this.props.attribute);
 
     return (
       <div className="radioButtonGroup">
         <RadioButtonGroup name={this.props.attribute}
                           ref="group"
+                          onChange={this.onChange}
                           defaultSelected={selected} >
           {this.props.items.map((item, i)=>{
             return (

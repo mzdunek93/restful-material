@@ -8,7 +8,7 @@ import CountriesDropDownMenu from "./CountriesDropDownMenu";
 
 var RestInput = React.createClass({
   propTypes: {
-    resource: React.PropTypes.object.isRequired,
+    model: React.PropTypes.object.isRequired,
     label: React.PropTypes.string.isRequired,
     type: React.PropTypes.string.isRequired,
     attribute: React.PropTypes.string.isRequired
@@ -24,31 +24,31 @@ var RestInput = React.createClass({
 
   inputs() {
     return {
-      string: this.labeledField,
-      dropDown: this.labeledDropDownMenu,
+      string: this.restField,
+      dropDown: this.restDropDownMenu,
       radio: this.radioButtonGroup,
       country: this.country,
       date: this.date
     }
   },
 
-  labeledField() {
+  restField() {
     return (
       <RestField label={this.props.label}
-                    model={this.props.resource}
-                    ref={this.props.attribute}
-                    attribute={this.props.attribute} />
+                 model={this.props.model}
+                 ref={this.props.attribute}
+                 attribute={this.props.attribute} />
     );
   },
 
-  labeledDropDownMenu() {
+  restDropDownMenu() {
     return (
       <span>
         <label>{this.props.label}</label>
         <RestDropDownMenu attribute={this.props.attribute}
-                             ref={this.props.attribute}
-                             model={this.props.resource}
-                             items={this.props.items} />
+                          ref={this.props.attribute}
+                          model={this.props.model}
+                          items={this.props.items} />
       </span>
     )
   },
@@ -61,7 +61,7 @@ var RestInput = React.createClass({
 
   country() {
     return (
-      <CountriesDropDownMenu model={this.props.resource}
+      <CountriesDropDownMenu model={this.props.model}
                              ref={this.props.attribute}
                              attribute={this.props.attribute} />
     );
@@ -70,8 +70,8 @@ var RestInput = React.createClass({
   date() {
     return (
       <RestDatePicker ref={this.props.attribute}
-                         model={this.props.resource}
-                         {...this.props} />
+                      model={this.props.resource}
+                      {...this.props} />
     );
   },
 
