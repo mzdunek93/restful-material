@@ -8,8 +8,11 @@ module.exports = (definition = {})=> {
     throw new Error("Cannot define a function called ajax.");
 
   var store = new Store();
-  for(var fun in definition)
-    store[fun] = definition[fun];
+  for(var fun in definition){
+    var def = definition[fun];
+    store[fun] = typeof def === 'function' ? def.bind(store) : def;
+  }
+
 
   var ajaxOpts = Config.get('ajax')
   if(!ajaxOpts)

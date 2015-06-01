@@ -55,5 +55,12 @@ describe('createStore', () => {
       expect(()=> createStore({ajax: ()=> {}})).
         toThrow("Cannot define a function called ajax.");
     })
+
+    it('is possible to use ajax object in the function body', () => {
+      Config.store({ajax: {url: 'http://localhost'}});
+
+      expect(createStore({get: function(){ return this.ajax.url }}).get()).
+        toEqual('http://localhost');
+    })
   })
 })
