@@ -6,15 +6,13 @@ class Ajax {
       throw new Error(`${opts} should have the url key`);
 
     this.beforeSend = opts.beforeSend || (() => {})
-
-    this.context   = opts.context || {};
     this.callbacks = opts.callbacks || {};
   }
 
   runCallback(xhr, resolve, reject) {
     var callback = this.callbacks[xhr.status];
     if(callback) {
-      callback(xhr, this.context, resolve, reject)
+      callback(xhr, resolve, reject)
       return true;
     } else
       return false;

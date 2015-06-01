@@ -1,5 +1,5 @@
-import Config from "./config";
-import Ajax from "./ajax";
+import Config from "./Config";
+import Ajax from "./Ajax";
 
 class Store {}
 

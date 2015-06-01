@@ -1,17 +1,17 @@
 /*eslint-env jasmine */
 
-jest.dontMock('../../src/back/config');
+jest.dontMock('../../src/back/Config');
 
-import config from '../../src/back/config';
+import Config from '../../src/back/Config';
 
 describe('Config', () => {
   it('can store passed options', () => {
-    config.store({ajax: 1});
-    expect(config.opts).toEqual({ajax: 1});
+    Config.store({ajax: 1});
+    expect(Config.opts).toEqual({ajax: 1});
   })
 
   it('can return an option', () => {
-    config.store({ajax: 1});
-    expect(config.get('ajax')).toEqual(1);
+    Config.store({ajax: 1});
+    expect(Config.get('ajax')).toEqual(1);
   })
 })

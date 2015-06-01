@@ -1,8 +1,8 @@
 import Ajax from './back/Ajax';
 import Model from './back/Model';
 import Intl from './back/Intl';
-import Store from './back/store';
-import Config from './back/config';
+import createStore from './back/createStore';
+import Config from './back/Config';
 import Buttons from './front/Buttons';
 import CountriesDropDownMenu from './front/CountriesDropDownMenu';
 import RestDatePicker from './front/RestDatePicker';
@@ -18,7 +18,7 @@ module.exports = {
   Ajax: Ajax,
   Intl: Intl,
   Model: Model,
-  Store: Store,
+  createStore: createStore,
   Buttons: Buttons,
   CountriesDropDownMenu: CountriesDropDownMenu,
   RestDatePicker: RestDatePicker,

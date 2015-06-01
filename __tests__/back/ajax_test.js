@@ -84,14 +84,13 @@ var defaultCallbacksExpectations = (run) => {
 
 var customCallbacksExpectations = (run) => {
   describe('setting callbacks', () => {
-    it('allows to setup a callback for any status code and use context', () => {
+    it('allows to setup a callback for any status code', () => {
       var called = false,
           router = {value: true};
       run(new Ajax({
         url: 'http://nukomeet.com',
-        context: {router: router},
         callbacks: {
-          401: (xhr, context)=> called = context.router.value
+          401: (xhr)=> called = router.value
         }
       }))
 
