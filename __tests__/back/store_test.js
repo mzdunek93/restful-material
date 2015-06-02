@@ -62,5 +62,27 @@ describe('createStore', () => {
       expect(createStore({get: function(){ return this.ajax.url }}).get()).
         toEqual('http://localhost');
     })
+
+    it('allows to use mixins', () => {
+      Config.store({ajax: {url: 'http://localhost'}});
+      var mixin = {mixedIn(){ return 'foo' }};
+      var store = createStore({
+        mixins: [mixin],
+        get: function(){ return this.mixedIn() }
+      });
+
+      expect(store.get()).toEqual('foo');
+    })
+
+    it('does allow to use mixins when there is a naming conflict', () => {
+      Config.store({ajax: {url: 'http://localhost'}});
+      var mixin = {get(){ return 'foo' }};
+
+      expect(()=> createStore({
+        mixins: [mixin],
+        get: function(){ return this.mixedIn() }
+      })).toThrow('A mixin overwrites a property called "get"');
+    })
+
   })
 })
