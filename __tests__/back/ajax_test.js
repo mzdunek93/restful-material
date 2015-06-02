@@ -14,9 +14,9 @@ XMLHttpRequest.HEADERS_RECEIVED = 2;
 XMLHttpRequest.LOADING = 3;
 XMLHttpRequest.DONE = 4;
 
-jest.dontMock('../../src/back/ajax');
+jest.dontMock('../../src/back/Ajax');
 
-import Ajax from '../../src/back/ajax';
+import Ajax from '../../src/back/Ajax';
 
 var requestExpectations = (run, method) => {
   beforeEach(() => {
