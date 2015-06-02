@@ -1,8 +1,8 @@
 /*eslint-env jasmine */
 
-jest.dontMock('../../src/back/model');
+jest.dontMock('../../src/back/Model');
 
-import Model from "../../src/back/model"
+import Model from "../../src/back/Model"
 
 describe('Model', () => {
   beforeEach(() => {
