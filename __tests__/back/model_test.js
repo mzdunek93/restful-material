@@ -1,8 +1,9 @@
 /*eslint-env jasmine */
+/*global jest*/
 
 jest.dontMock('../../src/back/Model');
 
-import Model from "../../src/back/Model"
+var Model = require('../../src/back/Model');
 
 describe('Model', () => {
   beforeEach(() => {

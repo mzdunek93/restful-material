@@ -1,8 +1,9 @@
 /*eslint-env jasmine */
+/*global jest*/
 
 jest.dontMock('../../src/back/Config');
 
-import Config from '../../src/back/Config';
+var Config = require('../../src/back/Config');
 
 describe('Config', () => {
   it('can store passed options', () => {

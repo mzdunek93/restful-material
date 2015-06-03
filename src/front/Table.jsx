@@ -3,7 +3,6 @@ import _ from "underscore";
 import { Toolbar,
          ToolbarGroup,
          TextField,
-         Paper,
          DropDownMenu } from "material-ui";
 
 var Controls = React.createClass({
@@ -40,7 +39,7 @@ var Controls = React.createClass({
         style.color = '#ff4081'
 
       return (
-        <span>
+        <span className="pageLinks">
           <a href="#"
              key={"a" + i}
              style={style}

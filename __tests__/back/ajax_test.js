@@ -1,6 +1,8 @@
 /*eslint-env jasmine */
+/*global jest*/
 
-import fakeXhr from '../../node_modules/fakexmlhttprequest'
+jest.dontMock('../../node_modules/fakexmlhttprequest');
+var fakeXhr = require('../../node_modules/fakexmlhttprequest');
 
 var requests = []
 XMLHttpRequest = function() {
@@ -16,7 +18,9 @@ XMLHttpRequest.DONE = 4;
 
 jest.dontMock('../../src/back/Ajax');
 
-import Ajax from '../../src/back/Ajax';
+var Ajax = require('../../src/back/Ajax');
+
+require("native-promise-only");
 
 var requestExpectations = (run, method) => {
   beforeEach(() => {
