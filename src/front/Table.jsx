@@ -14,6 +14,12 @@ var Controls = React.createClass({
     perPage: React.PropTypes.number.isRequired
   },
 
+  getDefaultProps() {
+    return {
+      headers: {}
+    }
+  },
+
   perPageChange(_, __, item) {
     this.props.onPerPageChange(item.payload);
   },
@@ -71,7 +77,7 @@ var Controls = React.createClass({
 
 var Table = React.createClass({
   propTypes: {
-    spec: React.PropTypes.object.isRequired,
+    data: React.PropTypes.object.isRequired,
     resources: React.PropTypes.array.isRequired
   },
 
@@ -111,7 +117,7 @@ var Table = React.createClass({
   thead() {
     return (
       <tr>
-        {_.keys(this.props.spec).map((h, i)=>
+        {_.keys(this.props.data).map((h, i)=>
           <th key={i}>{h}</th>)}
       </tr>
     );
@@ -121,8 +127,8 @@ var Table = React.createClass({
     if(resources)
       return this.resources(resources).map((r, i)=>{
         var row = [];
-        Object.keys(this.props.spec).map((title)=>{
-          var val = this.props.spec[title];
+        Object.keys(this.props.data).map((title)=>{
+          var val = this.props.data[title];
           if(_.isFunction(val))
             // bind 'this' to have router
             row.push(this.wrapInTd(val.bind(this)(r, i), title, 'cell-with-button'))
@@ -134,7 +140,7 @@ var Table = React.createClass({
     else
       return (
         <tr>
-          <td colSpan={Object.keys(this.props.spec).length}>
+          <td colSpan={Object.keys(this.props.data).length}>
             {this.props.pendingMessage}
           </td>
         </tr>
@@ -155,7 +161,7 @@ var Table = React.createClass({
     filterValue = filterValue.toString().toLowerCase();
 
     for(var i = 0; i < resources.length; i++){
-      var val = resources[i].get(this.props.spec[filterName]);
+      var val = resources[i].get(this.props.data[filterName]);
       // TODO: maybe for performance is better to use Regexp instead?
       if(val.toString().toLowerCase().indexOf(filterValue) !== -1)
         out.push(resources[i])
@@ -172,8 +178,10 @@ var Table = React.createClass({
   filters() {
     return (
       <tr>
-        {Object.keys(this.props.spec).map((title)=> {
-          if(_.isFunction(this.props.spec[title]))
+        {Object.keys(this.props.data).map((title)=> {
+          if(this.props.headers[title])
+            return <th data-title={title}>{this.props.headers[title]()}</th>;
+          else if(_.isFunction(this.props.data[title]))
             return <th data-title={title}></th>;
           else
             return (
