@@ -6,6 +6,8 @@ jest.dontMock('../../src/back/Model');
 var Model = require('../../src/back/Model');
 
 describe('Model', () => {
+  var model;
+
   beforeEach(() => {
     model = new Model({foo: 'bar'}); /*global model */
   })
@@ -90,6 +92,69 @@ describe('Model', () => {
     it('it sets a value when the attribute is blank', () => {
       model.setDefault('foo', 'a value')
       expect(model.get('bar')).toNotEqual('a value');
+    })
+  })
+
+  describe('serialization', () => {
+    class Parent extends Model {
+      klass() { return "Parent" }
+    }
+    class Child extends Model {
+      klass() { return "Child" }
+    }
+
+    describe('asJSON', () => {
+      var child, parent;
+
+      describe('a model has 1-1 relation', () => {
+        beforeEach(()=> {
+          child = new Child({foo: 'bar'});
+          parent = new Parent({child: child, bar: 'baz' });
+        })
+
+        it('returns pre-serialization form', () => {
+          expect(parent.asJSON()).toEqual(['Parent', {
+              map: {
+                child: ['Child', {map: {foo: 'bar'}, errors: {}}],
+                bar: 'baz'
+              },
+              errors: {}
+            }]);
+        })    
+      })
+
+      describe('a model has 1-many relation', () => {
+        beforeEach(()=> {
+          child = new Child({foo: 'bar'});
+          parent = new Parent({children: [child], bar: 'baz' });
+        })
+
+        it('returns pre-serialization form', () => {
+          expect(parent.asJSON()).toEqual(['Parent', {
+              map: {
+                children: [
+                  ['Child', {map: {foo: 'bar'}, errors: {}}]
+                ],
+                bar: 'baz'
+              },
+              errors: {}
+            }]);
+        })    
+      })
+
+      describe('a model has some errors', () => {
+        beforeEach(()=> {
+          parent = new Parent();
+          parent.errors['foo'] = 'bar';
+        })
+        
+        it('returns pre-serialization form', () => {
+          expect(parent.asJSON()).toEqual(['Parent', {
+              map: {},
+              errors: {'foo': 'bar'}
+          }]);
+        })    
+      })
     })
   })
 })
