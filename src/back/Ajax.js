@@ -6,16 +6,19 @@ class Ajax {
       throw new Error(`${opts} should have the url key`);
 
     this.beforeSend = opts.beforeSend || (() => {})
-    this.callbacks = opts.callbacks || {};
+    this.onSuccess  = opts.onSuccess  || (() => {});
+    this.onFailure  = opts.onFailure  || (() => {});
   }
 
-  runCallback(xhr, resolve, reject) {
-    var callback = this.callbacks[xhr.status];
-    if(callback) {
-      callback(xhr, resolve, reject)
-      return true;
-    } else
-      return false;
+  resolve(xhr, resolve) {
+    var response = JSON.parse(xhr.responseText || '{}');
+    this.onSuccess(response);
+    resolve(response);
+  }
+
+  reject(xhr, reject) {
+    this.onFailure(xhr);
+    reject(xhr);
   }
 
   send(method, path, data) {
@@ -32,9 +35,9 @@ class Ajax {
 
           if (xhr.readyState === XMLHttpRequest.DONE)
             if(xhr.status === 200)
-              resolve(JSON.parse(xhr.responseText || '{}'));
+              this.resolve(xhr, resolve);
             else
-              this.runCallback(xhr, resolve, reject) || reject(xhr)
+              this.reject(xhr, reject);
         }
         xhr.open(method, this.url + path, true);
 

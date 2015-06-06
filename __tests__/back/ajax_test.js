@@ -88,14 +88,23 @@ var defaultCallbacksExpectations = (run) => {
 
 var customCallbacksExpectations = (run) => {
   describe('setting callbacks', () => {
-    it('allows to setup a callback for any status code', () => {
-      var called = false,
-          router = {value: true};
+    it('allows to setup a callback for a success', () => {
+      var called = false;
       run(new Ajax({
         url: 'http://nukomeet.com',
-        callbacks: {
-          401: (xhr)=> called = router.value
-        }
+        onSuccess: (xhr)=> called = true
+      }))
+
+      requests.pop().
+        respond(200, {'Content-Type': 'application/json'}, "")
+      expect(called).toBe(true);
+    })
+
+    it('allows to setup a callback for a failure', () => {
+      var called = false;
+      run(new Ajax({
+        url: 'http://nukomeet.com',
+        onFailure: (xhr)=> called = true
       }))
 
       requests.pop().
