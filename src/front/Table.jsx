@@ -14,12 +14,6 @@ var Controls = React.createClass({
     perPage: React.PropTypes.number.isRequired
   },
 
-  getDefaultProps() {
-    return {
-      headers: {}
-    }
-  },
-
   perPageChange(_, __, item) {
     this.props.onPerPageChange(item.payload);
   },
@@ -83,7 +77,8 @@ var Table = React.createClass({
 
   getDefaultProps() {
     return {
-      pendingMessage: "Loading..."
+      pendingMessage: "Loading...",
+      headers: {}
     }
   },
 

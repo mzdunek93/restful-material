@@ -46,8 +46,7 @@ describe('the Table component', () => {
 
     it('renders the header row with title', () => {
       var component = render({
-        data: {'Foo title': 'foo'}, resources: [new Model({foo: 'bar'})],
-        headers: {}
+        data: {'Foo title': 'foo'}, resources: [new Model({foo: 'bar'})]
       });
 
       var trs = utils.scryRenderedDOMComponentsWithTag(component, 'tr');
@@ -70,8 +69,7 @@ describe('the Table component', () => {
     describe('there is no header props', () => {
       it('renders filter', () => {
         var component = render({
-          data: {'Foo title': 'foo'}, resources:  [new Model({foo: 'bar'})],
-          headers: {}
+          data: {'Foo title': 'foo'}, resources:  [new Model({foo: 'bar'})]
         });
 
         var trs = utils.scryRenderedDOMComponentsWithTag(component, 'tr');
