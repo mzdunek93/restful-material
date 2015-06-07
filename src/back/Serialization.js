@@ -67,6 +67,6 @@ var readModel = function(read) {
 }
 
 module.exports = {
-  write:   (model)=> JSON.stringify(writeModel(model)),
-  read:   (string)=> readModel(JSON.parse(string))
+  write: (model)=> JSON.stringify(writeModel(model)),
+  read:  (string)=> readModel(JSON.parse(string))
 };

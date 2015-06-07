@@ -4,6 +4,7 @@ import Intl from './back/Intl';
 import createStore from './back/createStore';
 import Config from './back/Config';
 import Serialization from './back/Serialization';
+import Savepoint from './back/Savepoint';
 import Buttons from './front/Buttons';
 import CountriesDropDownMenu from './front/CountriesDropDownMenu';
 import RestDatePicker from './front/RestDatePicker';
@@ -20,6 +21,7 @@ module.exports = {
   Intl: Intl,
   Model: Model,
   Serialization: Serialization,
+  Savepoint: Savepoint,
   createStore: createStore,
   Buttons: Buttons,
   CountriesDropDownMenu: CountriesDropDownMenu,
