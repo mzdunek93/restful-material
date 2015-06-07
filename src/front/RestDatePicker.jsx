@@ -4,7 +4,7 @@ import { DatePicker } from "material-ui";
 module.exports = React.createClass({
   dateFormat(date) {
     if(!(date instanceof Date))
-      throw new Error(`Expected ${date} to be a Date object`);
+      date = new Date(date);
 
     return date.toLocaleDateString('fr-FR');
   },
