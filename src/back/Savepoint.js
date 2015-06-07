@@ -20,16 +20,7 @@ var unsave = (arg) => {
   return arg;
 }
 
-var Mixin = {
-  getInitialState() {
-    return {
-      resource: savedResource()
-    }
-  }
-}
-
 module.exports = {
-  Mixin: Mixin,
   savedResource: savedResource,
   save: save,
   unsave: unsave
