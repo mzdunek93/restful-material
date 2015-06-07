@@ -50,24 +50,8 @@ class Model {
       this.set(attribute, value);
   }
 
-  klass() {
-    throw new Error("this method should return name of the class");
-  }
-
   asJSON() {
-    var out = {}, respondsTo = (value)=> value && value['asJSON'];
-
-    for(var key in this.map){
-      var value = this.map[key];
-      if(Array.isArray(value) && respondsTo(value[0]))
-        out[key] = value.map((v)=> v.asJSON());
-      else if(respondsTo(value))
-        out[key] = value.asJSON();
-      else
-        out[key] = value;
-    }
-
-    return [this.klass(), {map: out, errors: this.errors}];
+    return this;
   }
 }
 

@@ -3,60 +3,101 @@
 
 jest.dontMock('../../src/back/Serialization');
 jest.dontMock('../../src/back/Model');
+jest.dontMock('../../src/back/Config');
 
 var Serialization = require('../../src/back/Serialization');
 var Model         = require('../../src/back/Model');
+var Config        = require('../../src/back/Config');
 
 describe('Serialization', () => {
-  class Child extends Model {
-    klass() { return "Child" }
-  }
-  class GrandChild extends Model {
-    klass() { return "GrandChild" }
-  }
-  var child, models;
+  class Child extends Model {}
+  class Parent extends Model {}
+  var child, parent;
 
   beforeEach(()=> {
-    child = new Child();
-    models = {'Child': Child, 'GrandChild': GrandChild}
+    Config.store({'constMapping': {'Child': Child, 'Parent': Parent}});
   })
 
-  // it('serializes', () => {
-  //   child.set('foo', 'bar');
+  describe('serialization', () => {
+    it('serializes attributes', () => {
+      parent = new Parent({foo: 'bar'});
 
-  //   expect(Serialization.write(child)).
-  //     toEqual(JSON.stringify(['Child', {map: {foo: 'bar'}, errors: {}}]));
-  // })
+      expect(Serialization.write(parent)).
+        toEqual(JSON.stringify(['Parent', {map: {foo: 'bar'}, errors: {}}]));
+    })
+
+    it('serializes errors', () => {
+      parent = new Parent();
+      parent.errors['foo'] = 'bar';
+
+      expect(Serialization.write(parent)).
+        toEqual(JSON.stringify(['Parent', {map: {}, errors: {'foo': 'bar'}}]));
+    })
+
+    describe('a model has 1-1 relation', () => {
+      beforeEach(()=> {
+        child = new Child({foo: 'bar'});
+        parent = new Parent({child: child, bar: 'baz' });
+      })
+
+      it('serializes both', () => {
+        expect(Serialization.write(parent)).
+          toEqual(JSON.stringify(['Parent', {
+            map: {
+              child: ['Child', {map: {foo: 'bar'}, errors: {}}],
+              bar: 'baz'
+            },
+            errors: {}
+          }]));
+      })
+    })
+
+    describe('a model has 1-many relation', () => {
+      beforeEach(()=> {
+        child = new Child({foo: 'bar'});
+        parent = new Parent({children: [child], bar: 'baz' });
+      })
+
+      it('serializes both', () => {
+        expect(Serialization.write(parent)).
+          toEqual(JSON.stringify(['Parent', {
+            map: {
+              children: [
+                ['Child', {map: {foo: 'bar'}, errors: {}}]
+              ],
+              bar: 'baz'
+            },
+            errors: {}
+          }]));
+      })
+    })
+  })
 
   describe('deserialization', () => {
-    // it('de-serializes map', () => {
-    //   child.set('foo', 'bar');
+    it('de-serializes attributes and errors', () => {
+      parent = new Parent({foo: 'bar'});
+      parent.errors = {bar: 'baz'}
 
-    //   expect(Serialization.read(Serialization.write(child), models)).
-    //     toEqual(child);
-    // })
+      expect(Serialization.read(Serialization.write(parent))).
+        toEqual(parent);
+    })
 
-    // it('de-serializes errors', () => {
-    //   child.errors = {foo: 'bar'}
+    it('de-serializes 1-1 relation', () => {
+      parent = new Parent();
+      child = new Child();
+      parent.set('child', child);
 
-    //   expect(Serialization.read(Serialization.write(child), models).errors).
-    //     toEqual({foo: 'bar'});
-    // })
-
-    // it('de-serializes 1-1 relation', () => {
-    //   var grandChild = new GrandChild({bar: 'baz'});
-    //   child.set('grandChild', grandChild);
-
-    //   expect(Serialization.read(Serialization.write(child), models)).
-    //     toEqual(child);
-    // })
+      expect(Serialization.read(Serialization.write(parent))).
+        toEqual(parent);
+    })
 
     it('de-serializes 1-many relation', () => {
-      var grandChild = new GrandChild({bar: 'baz'});
-      child.set('grandChild', [grandChild]);
+      parent = new Parent();
+      child = new Child();
+      parent.set('child', [child]);
 
-      expect(Serialization.read(Serialization.write(child), models)).
-        toEqual(child);
+      expect(Serialization.read(Serialization.write(parent))).
+        toEqual(parent);
     })
   })
 })
