@@ -12,7 +12,6 @@
     "test:watch": "nodemon -w __tests__ -w ./src -e js,jsx -x npm test",
     "prebuild": "rm -rf lib",
     "build": "./node_modules/.bin/babel --stage 1 ./src --out-dir ./lib",
-    "build:watch": "nodemon -w ./src -e js,jsx -x npm run build",
     "postinstall": "npm run build"
   },
   "jest": {
