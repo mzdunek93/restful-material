@@ -31,5 +31,6 @@ module.exports = {
   RestInput: RestInput,
   Spinner: Spinner,
   Table: Table,
+  Config: Config,
   configure: configure
 };
