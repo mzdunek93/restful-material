@@ -94,4 +94,16 @@ describe('Model', () => {
       expect(model.get('bar')).toNotEqual('a value');
     })
   })
+
+  describe('asJSON', () => {
+    it('with no arg returns all attributes', () => {
+      model = new Model({foo: 'bar', baz: 'foo'})
+      expect(model.asJSON()).toEqual({foo: 'bar', baz: 'foo'});
+    })
+
+    it('returns passed attributes', () => {
+      model = new Model({foo: 'bar', baz: 'foo'})
+      expect(model.asJSON(['foo'])).toEqual({foo: 'bar'});
+    })
+  })
 })

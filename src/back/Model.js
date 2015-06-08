@@ -50,8 +50,13 @@ class Model {
       this.set(attribute, value);
   }
 
-  asJSON() {
-    return this;
+  asJSON(keys) {
+    if(!keys)
+      keys = Object.keys(this.map)
+    var out = {};
+
+    keys.forEach((key)=> out[key] = this.get(key));
+    return out;
   }
 }
 
