@@ -1,5 +1,6 @@
 import React from "react";
 import _ from "underscore";
+import { IntlMixin } from "react-intl";
 import { Toolbar,
          ToolbarGroup,
          TextField,
@@ -70,6 +71,8 @@ var Controls = React.createClass({
 });
 
 var Table = React.createClass({
+  mixins: [IntlMixin],
+
   propTypes: {
     data: React.PropTypes.object.isRequired,
     resources: React.PropTypes.array.isRequired
@@ -112,10 +115,17 @@ var Table = React.createClass({
   thead() {
     return (
       <tr>
-        {_.keys(this.props.data).map((h, i)=>
-          <th key={i}>{h}</th>)}
+        {_.keys(this.props.data).map((title, i)=>
+          <th key={i}>{this.translateMaybe(title)}</th>)}
       </tr>
     );
+  },
+
+  translateMaybe(title) {
+    if(this.props.messages)
+      return this.getIntlMessage(title)
+    else
+      return title
   },
 
   tbody(resources) {

@@ -53,6 +53,20 @@ describe('the Table component', () => {
       expect(trs[0].getDOMNode().textContent).toEqual('Foo title');
     })
 
+    describe('there is a intlKeyPrefix', () => {
+      it('renders the header row with translated title', () => {
+        var component = render({
+          messages: {'fooTitle': 'Translated foo title'},
+          data: {'fooTitle': 'foo'},
+          resources: [new Model({foo: 'bar'})]
+        });
+
+        var trs = utils.scryRenderedDOMComponentsWithTag(component, 'tr');
+        expect(trs[0].getDOMNode().textContent).
+          toEqual('Translated foo title');
+      })
+    })
+
     describe('there is a header props', () => {
       it('does not render filter', () => {
         var component = render({
