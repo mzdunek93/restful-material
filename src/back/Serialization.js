@@ -1,5 +1,6 @@
 import Config from "./Config";
 
+//TODO: far from perfect, but probably it's flawed by design
 var isSerializedModel = (value)=> {
   return Array.isArray(value) &&
     value[1] && typeof(value[1]) === "object" &&
@@ -24,49 +25,58 @@ var className = function(model) {
   return name;
 }
 
-var writeModel = function(model) {
-  var out = {}, isModel = (value)=> value && className(value)
+var mapOverObject = function(value, fun) {
+  var out = {};
+  for(var key in value) out[key] = fun(value[key]);
+  return out;
+}
 
-  for(var key in model.map) {
-    var value = model.map[key];
-
-    if(Array.isArray(value) && isModel(value[0]))
-      out[key] = value.map((v)=> writeModel(v));
-    else if(isModel(value))
-      out[key] = writeModel(value);
-    else
-      out[key] = value;
-  }
-
+var classNameOrError = function(model) {
   var name = className(model);
   if(!name)
     throw new Error(`Class of ${model} is missing from constMapping`)
-
-  return [name, {map: out, errors: model.errors}];
+  return name;
 }
 
-var readModel = function(read) {
-  var [root, rest] = [read[0], read[1]];
+var isModel = function(value){
+  return value && className(value);
+}
 
+var initModel = function(value) {
+  var [root, rest] = [value[0], value[1]];
   var constructor = mapping()[root];
   var model = new constructor();
   model.errors = rest.errors;
-
-  for(var key in rest.map) {
-    var value = rest.map[key];
-
-    if(Array.isArray(value) && isSerializedModel(value[0]))
-      model.set(key, value.map((v)=> readModel(v)));
-    else if(isSerializedModel(value))
-      model.set(key, readModel(value));
-    else
-      model.set(key, value);
-  }
-
+  model.map = read(rest.map);
   return model;
 }
 
+var write = function(value) {
+  if(isModel(value))
+    return [
+      classNameOrError(value),
+      write({map: value.map, errors: value.errors})
+    ];
+  else if(Array.isArray(value))
+    return value.map((v)=> write(v));
+  else if(typeof(value) === 'object')
+    return mapOverObject(value, write);
+  else
+    return value;
+}
+
+var read = function(value) {
+  if(isSerializedModel(value))
+    return initModel(value);
+  else if(Array.isArray(value))
+    return value.map((r)=> read(r));
+  else if(typeof(value) === 'object')
+    return mapOverObject(value, read);
+  else
+    return value;
+}
+
 module.exports = {
-  write: (model)=> JSON.stringify(writeModel(model)),
-  read:  (string)=> readModel(JSON.parse(string))
+  write: (value)=> JSON.stringify(write(value)),
+  read:  (string)=> read(JSON.parse(string))
 };

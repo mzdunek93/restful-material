@@ -19,6 +19,19 @@ describe('Serialization', () => {
   })
 
   describe('serialization', () => {
+    it('serializes map with array', () => {
+      expect(Serialization.write({foo: [1, 2]})).
+        toEqual(JSON.stringify({foo: [1, 2]}));
+    })
+
+    it('serializes map with array of Models', () => {
+      parent = new Parent({foo: 'bar'})
+
+      expect(Serialization.write({foo: [parent]})).
+        toEqual(JSON.stringify({
+          foo: [['Parent', {map: {foo: 'bar'}, errors: {}}]]}));
+    })
+
     it('serializes attributes', () => {
       parent = new Parent({foo: 'bar'});
 
@@ -74,6 +87,18 @@ describe('Serialization', () => {
   })
 
   describe('deserialization', () => {
+    it('deserializes map with array', () => {
+      expect(Serialization.read(Serialization.write({foo: [1, 2]}))).
+        toEqual({foo: [1, 2]});
+    })
+
+    it('deserializes map with array of Models', () => {
+      parent = new Parent({foo: 'bar'})
+
+      expect(Serialization.read(Serialization.write({foo: [parent]}))).
+        toEqual({foo: [parent]});
+    })
+
     it('de-serializes attributes and errors', () => {
       parent = new Parent({foo: 'bar'});
       parent.errors = {bar: 'baz'}
