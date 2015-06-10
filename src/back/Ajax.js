@@ -5,19 +5,22 @@ class Ajax {
     else
       throw new Error(`${opts} should have the url key`);
 
-    this.beforeSend = opts.beforeSend || (() => {})
-    this.onSuccess  = opts.onSuccess  || (() => {});
-    this.onFailure  = opts.onFailure  || (() => {});
+    this.beforeSend   = opts.beforeSend  || (() => {});
+    this.onSuccess    = opts.onSuccess   || (() => {});
+    this.onFailure    = opts.onFailure   || (() => {});
+    this.onCompleted  = opts.onCompleted || (() => {});
   }
 
   resolve(xhr, resolve) {
     var response = JSON.parse(xhr.responseText || '{}');
     this.onSuccess(response);
+    this.onCompleted(xhr);
     resolve(response);
   }
 
   reject(xhr, reject) {
     this.onFailure(xhr);
+    this.onCompleted(xhr);
     reject(xhr);
   }
 
