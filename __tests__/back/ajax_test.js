@@ -88,28 +88,34 @@ var defaultCallbacksExpectations = (run) => {
 
 var customCallbacksExpectations = (run) => {
   describe('setting callbacks', () => {
-    it('allows to setup a callback for a success', () => {
-      var called = false;
+    it('allows to setup a callback for a success and complete', () => {
+      var successfull = false,
+          completed = false;
       run(new Ajax({
         url: 'http://nukomeet.com',
-        onSuccess: (xhr)=> called = true
+        onSuccess: ()=> successfull = true,
+        onCompleted: ()=> completed = true
       }))
 
       requests.pop().
         respond(200, {'Content-Type': 'application/json'}, "")
-      expect(called).toBe(true);
+      expect(successfull).toBe(true);
+      expect(completed).toBe(true);
     })
 
-    it('allows to setup a callback for a failure', () => {
-      var called = false;
+    it('allows to setup a callback for a failure and complete', () => {
+      var failed = false,
+          completed = false;
       run(new Ajax({
         url: 'http://nukomeet.com',
-        onFailure: (xhr)=> called = true
+        onFailure: ()=> failed = true,
+        onCompleted: ()=> completed = true
       }))
 
       requests.pop().
         respond(401, {'Content-Type': 'application/json'}, "")
-      expect(called).toBe(true);
+      expect(failed).toBe(true);
+      expect(completed).toBe(true);
     })
   })
 };
