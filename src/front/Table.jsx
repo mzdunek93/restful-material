@@ -192,7 +192,7 @@ var Table = React.createClass({
             return (
               <th data-title={title}>
                 <TextField ref={title}
-                           className="table-filter"
+                           style={{display: 'table-cell'}}
                            onChange={this.updateFilter.bind(this, title)} />
               </th>
             );
