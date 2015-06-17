@@ -26,9 +26,10 @@ module.exports = React.createClass({
 
     return (
       <DatePicker ref="picker"
+                  hintText={this.props.label}
                   errorText={m.errors[this.props.attribute]}
                   formatDate={this.dateFormat}
                   defaultDate={m.get(this.props.attribute)} />
     );
-  },
+  }
 });
