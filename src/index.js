@@ -11,7 +11,6 @@ import RestDatePicker from './front/RestDatePicker';
 import RestDropDownMenu from './front/RestDropDownMenu';
 import RestField from './front/RestField';
 import RestInput from './front/RestInput';
-import Spinner from './front/Spinner';
 import Table from './front/Table';
 
 var configure = (opts)=> Config.store(opts)
@@ -29,7 +28,6 @@ module.exports = {
   RestDropDownMenu: RestDropDownMenu,
   RestField: RestField,
   RestInput: RestInput,
-  Spinner: Spinner,
   Table: Table,
   Config: Config,
   configure: configure
