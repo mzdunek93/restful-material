@@ -1,5 +1,6 @@
 import Ajax from './back/Ajax';
 import Model from './back/Model';
+import Proxy from './back/Proxy';
 import Intl from './back/Intl';
 import createStore from './back/createStore';
 import Config from './back/Config';
@@ -19,6 +20,7 @@ module.exports = {
   Ajax: Ajax,
   Intl: Intl,
   Model: Model,
+  Proxy: Proxy,
   Serialization: Serialization,
   Savepoint: Savepoint,
   createStore: createStore,
