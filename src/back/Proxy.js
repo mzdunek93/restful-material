@@ -8,7 +8,7 @@ class Proxy {
     if(model)
       return model.get(args[1])
     else
-      throw new Error(`${model} is not set. Maybe you meant ${this.models}?`);
+      throw new Error(`${model} is not set. Maybe you meant ${Object.keys(this.models)}?`);
   }
 }
 
