@@ -23,6 +23,10 @@ module.exports = React.createClass({
     return this.refs.field.getValue();
   },
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({value: nextProps.model.get(nextProps.attribute)})
+  },
+
   valueLink() {
     return {
       value: this.state.value,
