@@ -4,9 +4,13 @@ import { IntlMixin } from "react-intl";
 import { Toolbar,
          ToolbarGroup,
          TextField,
-         DropDownMenu } from "material-ui";
+         DropDownMenu,
+         Styles,
+         Mixins } from "material-ui";
 
 var Controls = React.createClass({
+  mixins: [Mixins.StylePropable ],
+
   propTypes: {
     onPageChange: React.PropTypes.func.isRequired,
     onPerPageChange: React.PropTypes.func.isRequired,
@@ -33,17 +37,39 @@ var Controls = React.createClass({
   ],
 
   render() {
+    var styles = {
+      toolbar: {
+        fontWeight: Styles.Typography.fontWeightNormal,
+        color: Styles.Typography.textLightBlack
+      },
+
+      pageLinks: {
+        paddingLeft: '24px',
+        lineHeight: '56px'
+      },
+
+      desc: {
+        position: 'relative',
+        top: '-24px'
+      },
+
+      a: {
+        textDecoration: 'none', 
+        color: 'inherit'
+      }
+    };
+
     var pageLinks = _.range(this.props.count / this.props.perPage).map(function(i){
-      var style = {textDecoration: 'none', color: 'inherit'};
+      var highlight = {}
       if(i === this.props.page)
-        style.fontWeight = 'bold',
-        style.color = '#ff4081'
+        highlight.fontWeight = 'bold',
+        highlight.color = Styles.Colors.pink500
 
       return (
-        <span className="pageLinks">
+        <span style={styles.pageLinks}>
           <a href="#"
              key={"a" + i}
-             style={style}
+             style={this.mergeAndPrefix(styles.a, highlight)}
              onClick={function(e){this.pageChange(e, i)}.bind(this)}>
             {i + 1}
           </a>
@@ -52,12 +78,12 @@ var Controls = React.createClass({
     }.bind(this))
 
     return (
-      <Toolbar className="mui-toolbar-sort">
-        <ToolbarGroup key={0} float="left" >
+      <Toolbar style={styles.toolbar}>
+        <ToolbarGroup style={styles.group} key={0} float="left" >
           {pageLinks}
         </ToolbarGroup>
-        <ToolbarGroup key={1} float="right" >
-          <span>
+        <ToolbarGroup style={styles.group} key={1} float="right" >
+          <span style={styles.desc}>
             Items per page
           </span>
           <span>
