@@ -1,3 +1,5 @@
+import IntlLib from "intl";
+
 import Ajax from './back/Ajax';
 import Model from './back/Model';
 import Proxy from './back/Proxy';
