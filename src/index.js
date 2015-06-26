@@ -15,6 +15,7 @@ import RestDropDownMenu from './front/RestDropDownMenu';
 import RestField from './front/RestField';
 import RestInput from './front/RestInput';
 import Table from './front/Table';
+import Info from './front/Info';
 
 var configure = (opts)=> Config.store(opts)
 
@@ -33,6 +34,7 @@ module.exports = {
   RestField: RestField,
   RestInput: RestInput,
   Table: Table,
+  Info: Info,
   Config: Config,
   configure: configure
 };
