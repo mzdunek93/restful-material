@@ -1,22 +1,24 @@
+/* eslint-env jasmine */
+/* globals jest */
+
 jest.dontMock('../../src/front/Table');
 jest.dontMock('../../src/back/Model');
 
 import Table from "../../src/front/Table";
 import Model from "../../src/back/Model";
-import React from 'react/addons';
-var utils = React.addons.TestUtils;
+
+import { utils, renderIntoDocument } from "../helper";
 
 describe('the Table component', () => {
   var component;
 
   describe('pagination', () => {
     beforeEach(() => {
-      var data = {'Foo title': 'foo'};
-      var resources = [1, 2, 3, 4, 5, 6].map((i)=> new Model({foo: "bar" + i}));
-      component = utils.renderIntoDocument(React.createElement(Table,
-                                                               {data: data,
-                                                                headers: {},
-                                                                resources: resources}));
+      component = renderIntoDocument(Table, {
+        data: {'Foo title': 'foo'},
+        headers: {},
+        resources: [1, 2, 3, 4, 5, 6].map((i)=> new Model({foo: "bar" + i}))
+      })
     })
 
     it('renders the row for each data', () => {
@@ -36,16 +38,8 @@ describe('the Table component', () => {
   })
 
   describe('headers', () => {
-    var render;
-
-    beforeEach(() => {
-      render = (props)=> {
-        return utils.renderIntoDocument(React.createElement(Table, props));
-      }
-    })
-
     it('renders the header row with title', () => {
-      var component = render({
+      var component = renderIntoDocument(Table, {
         data: {'Foo title': 'foo'}, resources: [new Model({foo: 'bar'})]
       });
 
@@ -55,7 +49,7 @@ describe('the Table component', () => {
 
     describe('there is a intlKeyPrefix', () => {
       it('renders the header row with translated title', () => {
-        var component = render({
+        var component = renderIntoDocument(Table, {
           messages: {'fooTitle': 'Translated foo title'},
           data: {'fooTitle': 'foo'},
           resources: [new Model({foo: 'bar'})]
@@ -69,8 +63,9 @@ describe('the Table component', () => {
 
     describe('there is a header props', () => {
       it('does not render filter', () => {
-        var component = render({
-          data: {'Foo title': 'foo'}, resources:  [new Model({foo: 'bar'})],
+        var component = renderIntoDocument(Table, {
+          data: {'Foo title': 'foo'},
+          resources:  [new Model({foo: 'bar'})],
           headers: {'Foo title': function(){ return 'no filter'}}
         });
 
@@ -82,8 +77,8 @@ describe('the Table component', () => {
 
     describe('there is no header props', () => {
       it('renders filter', () => {
-        var component = render({
-          data: {'Foo title': 'foo'}, resources:  [new Model({foo: 'bar'})]
+        var component = renderIntoDocument(Table, {
+          data: {'Foo title': 'foo'}, resources: [new Model({foo: 'bar'})]
         });
 
         var trs = utils.scryRenderedDOMComponentsWithTag(component, 'tr');

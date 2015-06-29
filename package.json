@@ -28,7 +28,8 @@
       "jsx"
     ],
     "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/*"
+      "<rootDir>/node_modules/*",
+      "<rootDir>/__tests__/helper.js"
     ]
   },
   "keywords": [

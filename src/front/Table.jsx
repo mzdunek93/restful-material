@@ -66,7 +66,7 @@ var Controls = React.createClass({
         highlight.color = Styles.Colors.pink500
 
       return (
-        <span style={styles.pageLinks}>
+        <span style={styles.pageLinks} className="pageLinks">
           <a href="#"
              key={"a" + i}
              style={this.mergeAndPrefix(styles.a, highlight)}
