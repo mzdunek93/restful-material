@@ -1,9 +1,9 @@
 import React from "react";
-import _ from "underscore";
 import RestField from "./RestField";
 import RestDatePicker from "./RestDatePicker";
 import RestDropDownMenu from "./RestDropDownMenu";
 import RestRadioButtonGroup from "./RestRadioButtonGroup";
+import RestCheckbox from "./RestCheckbox";
 import CountriesDropDownMenu from "./CountriesDropDownMenu";
 
 var RestInput = React.createClass({
@@ -28,7 +28,8 @@ var RestInput = React.createClass({
       dropDown: this.restDropDownMenu,
       radio: this.radioButtonGroup,
       country: this.country,
-      date: this.date
+      date: this.date,
+      boolean: this.checkbox
     }
   },
 
@@ -73,6 +74,14 @@ var RestInput = React.createClass({
                       model={this.props.resource}
                       {...this.props} />
     );
+  },
+
+  checkbox() {
+    return (
+      <RestCheckbox ref={this.props.attribute}
+                    model={this.props.resource}
+                    {...this.props} />
+    )
   },
 
   render(){

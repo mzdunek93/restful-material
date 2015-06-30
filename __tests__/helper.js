@@ -19,6 +19,7 @@ var ContextWrapper = React.createClass({
 var renderIntoDocument = function(component, props) {
   return utils.renderIntoDocument(React.createElement(ContextWrapper, {
     render: function() {
+      props.ref = "element";
       return React.createElement(component, props)
     }
   }))
