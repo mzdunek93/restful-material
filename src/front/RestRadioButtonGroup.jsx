@@ -31,5 +31,5 @@ module.exports = React.createClass({
         </RadioButtonGroup>
       </div>
     )
-  },
+  }
 });
