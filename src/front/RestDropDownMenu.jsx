@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "underscore";
 import { DropDownMenu } from "material-ui";
 
 // Sadly the DropDownMenu from material-ui does not have getValue() method.
@@ -19,34 +18,29 @@ module.exports = React.createClass({
     if(this.props.model.isBlank(this.props.attribute))
       throw new Error(`The attribute "${this.props.attribute}" of ${this.props.model} is not set`);
 
-    var payload = this.props.model.get(this.props.attribute);
-
     return {
-      items: this.items(payload),
-      payload: payload
+      selectedIndex: this.selectedIndex(this.props.model.get(this.props.attribute))
     }
   },
 
   _onChange(_, __, item) {
-    this.setState({payload: item.payload});
     this.props.model.set(this.props.attribute, item.payload);
   },
 
   getSelectedValue() {
-    return this.state.payload;
+    return this.props.model.get(this.props.attribute);
   },
 
   getValue() {
     return this.getSelectedValue();
   },
 
-  items(payload) {
-    var predicate = (itemSpec) => itemSpec.payload == payload;
-    var selected = _.find(this.props.items, predicate);
-    if(selected)
-      return [selected].concat(_.reject(this.props.items, predicate));
-    else
-      return this.props.items;
+  selectedIndex(payload) {
+    return this.props.items.map((i)=> i.payload).indexOf(payload);
+  },
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({selectedIndex: this.selectedIndex(nextProps.model.get(nextProps.attribute))});
   },
 
   render() {
@@ -56,7 +50,8 @@ module.exports = React.createClass({
         <DropDownMenu id={this.props.id || this.props.attribute}
                       errorText={this.props.model.errors[this.props.attribute]}
                       onChange={this._onChange}
-                      menuItems={this.state.items}
+                      selectedIndex={this.state.selectedIndex}
+                      menuItems={this.props.items}
                       className={this.props.className} />
       </span>
     )
