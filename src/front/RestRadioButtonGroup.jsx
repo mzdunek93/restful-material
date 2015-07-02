@@ -2,6 +2,12 @@ import React from "react";
 import { RadioButtonGroup, RadioButton } from "material-ui";
 
 module.exports = React.createClass({
+  getInitialState() {
+    return {
+      selected: this.props.model.get(this.props.attribute)
+    }
+  },
+
   getValue(){
     return this.refs['group'].getSelectedValue();
   },
@@ -12,17 +18,20 @@ module.exports = React.createClass({
 
   onChange(e, selected) {
     this.props.model.set(this.props.attribute, selected);
+    this.setState({selected: selected});
+  },
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({selected: nextProps.model.get(nextProps.attribute)});
   },
 
   render() {
-    var selected = this.props.model.get(this.props.attribute);
-
     return (
       <div className="radioButtonGroup">
         <RadioButtonGroup name={this.props.attribute}
                           ref="group"
                           onChange={this.onChange}
-                          defaultSelected={selected} >
+                          valueSelected={this.state.selected} >
           {this.props.items.map((item, i)=>{
             return (
               <RadioButton value={item.payload} key={i} label={item.text} />
