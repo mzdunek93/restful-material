@@ -36,7 +36,11 @@ module.exports = React.createClass({
   },
 
   selectedIndex(payload) {
-    return this.props.items.map((i)=> i.payload).indexOf(payload);
+    var index = this.props.items.map((i)=> i.payload).indexOf(payload);
+    if(index === -1)
+      return 0;
+    else
+      return index;
   },
 
   componentWillReceiveProps(nextProps) {
