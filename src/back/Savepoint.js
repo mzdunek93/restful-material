@@ -1,27 +1,36 @@
-/*global localStorage*/
+var Saves;
 
-import Serialization from "./Serialization"
-var key = 'savePoint';
+if ("development" !== process.env.NODE_ENV) {
+  window.saves = {};
+  Saves = window.saves;
+} else
+  Saves = {};
 
-var savedResource = () => {
-  var stored = localStorage.getItem(key);
-  if(stored)
-    return Serialization.read(stored);
-  else
-    return null;
-}
+var Mixin = function(id){
+  return {
+    componentWillMount() {
+      var savepoint = Saves[id];
+      if(savepoint) {
+        this.setState(savepoint);
+        this.deleteSavepoint();
+      }
+    },
 
-var save = (model) => {
-  return localStorage.setItem(key, Serialization.write(model))
-}
+    makeSavepoint() {
+      Saves[id] = this.state;
+    },
 
-var unsave = (arg) => {
-  localStorage.removeItem(key);
-  return arg;
+    deleteSavepointMaybe(xhr) {
+      if(xhr && xhr.status !== 401)
+        this.deleteSavepoint();
+    },
+
+    deleteSavepoint() {
+      delete Saves[id];
+    }
+  }
 }
 
 module.exports = {
-  savedResource: savedResource,
-  save: save,
-  unsave: unsave
+  Mixin: Mixin
 }
