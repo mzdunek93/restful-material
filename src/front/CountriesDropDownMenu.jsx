@@ -10,7 +10,7 @@ var CountriesDropDownMenu = React.createClass({
     return this.refs['menu'].getSelectedValue();
   },
 
-  getInitialProps() {
+  getDefaultProps() {
     return {
       codeStandard: 'alfa3'
     }
@@ -25,10 +25,11 @@ var CountriesDropDownMenu = React.createClass({
   render() {
     return (
         <RestDropDownMenu items={this.items()}
-      ref="menu"
-      model={this.props.model}
-      attribute={this.props.attribute}
-      className="country-select" />
+                          sort={this.props.sort}
+                          ref="menu"
+                          model={this.props.model}
+                          attribute={this.props.attribute}
+                          className="country-select" />
     )
   },
 

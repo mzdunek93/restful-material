@@ -11,6 +11,7 @@ module.exports = React.createClass({
     attribute: React.PropTypes.string.isRequired,
     items: React.PropTypes.array.isRequired,
     model: React.PropTypes.object.isRequired,
+    sort: React.PropTypes.func,
     id: React.PropTypes.string
   },
 
@@ -43,6 +44,13 @@ module.exports = React.createClass({
       return index;
   },
 
+  items() {
+    if(this.props.sort)
+      return this.props.items.sort(this.props.sort);
+    else
+      return this.props.items;
+  },
+
   componentWillReceiveProps(nextProps) {
     this.setState({selectedIndex: this.selectedIndex(nextProps.model.get(nextProps.attribute))});
   },
@@ -55,7 +63,7 @@ module.exports = React.createClass({
                       errorText={this.props.model.errors[this.props.attribute]}
                       onChange={this._onChange}
                       selectedIndex={this.state.selectedIndex}
-                      menuItems={this.props.items}
+                      menuItems={this.items()}
                       className={this.props.className} />
       </span>
     )
