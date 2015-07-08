@@ -1,5 +1,5 @@
 import React from "react";
-import mui from "material-ui";
+import { TextField } from "material-ui";
 
 module.exports = React.createClass({
   propTypes: {
@@ -38,17 +38,10 @@ module.exports = React.createClass({
   },
 
   render(){
-    var props = {id: this.props.id,
-                 multiLine: this.props.multiLine,
-                 ref: 'field',
-                 valueLink: this.valueLink(),
-                 type: this.props.type,
-                 floatingLabelText: this.props.label},
-        model = this.props.model,
-        attribute = this.props.attribute;
-    if(model && attribute)
-      props.errorText    = model.errors[attribute];
-
-    return React.createElement(mui.TextField, props);
+    return <TextField {...this.props}
+                      ref='field'
+                      errorText={this.props.model.errors[this.props.attribute]}
+                      valueLink={this.valueLink()}
+                      floatingLabelText={this.props.label} />
   }
 })

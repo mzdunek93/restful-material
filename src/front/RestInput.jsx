@@ -35,11 +35,8 @@ var RestInput = React.createClass({
 
   restField() {
     return (
-      <RestField label={this.props.label}
-                 model={this.props.model}
-                 ref={this.props.attribute}
-                 attribute={this.props.attribute} />
-    );
+      <RestField {...this.props} />
+    )
   },
 
   restDropDownMenu() {
