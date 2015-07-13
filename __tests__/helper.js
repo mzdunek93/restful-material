@@ -25,8 +25,17 @@ var renderIntoDocument = function(component, props) {
   }))
 }
 
+var renderToStaticMarkup = function(component, props) {
+  return React.renderToStaticMarkup(React.createElement(ContextWrapper, {
+    render: function() {
+      return React.createElement(component, props)
+    }
+  }))
+}
+
 module.exports = {
   utils: utils,
   renderIntoDocument: renderIntoDocument,
+  renderToStaticMarkup: renderToStaticMarkup,
   Wrapper: ContextWrapper
 }
