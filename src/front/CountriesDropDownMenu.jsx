@@ -24,12 +24,11 @@ var CountriesDropDownMenu = React.createClass({
 
   render() {
     return (
-        <RestDropDownMenu items={this.items()}
-                          sort={this.props.sort}
-                          ref="menu"
-                          model={this.props.model}
-                          attribute={this.props.attribute}
-                          className="country-select" />
+      <RestDropDownMenu {...this.props}
+                        items={this.items()}
+                        sort={this.props.sort}
+                        ref="menu"
+                        className="country-select" />
     )
   },
 

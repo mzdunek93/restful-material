@@ -41,43 +41,31 @@ var RestInput = React.createClass({
 
   restDropDownMenu() {
     return (
-      <span>
-        <label>{this.props.label}</label>
-        <RestDropDownMenu attribute={this.props.attribute}
-                          ref={this.props.attribute}
-                          model={this.props.model}
-                          items={this.props.items} />
-      </span>
+      <RestDropDownMenu {...this.props} ref={this.props.attribute} />
     )
   },
 
   radioButtonGroup() {
     return (
-      <RestRadioButtonGroup ref={this.props.attribute} {...this.props} />
+      <RestRadioButtonGroup {...this.props} ref={this.props.attribute} />
     )
   },
 
   country() {
     return (
-      <CountriesDropDownMenu model={this.props.model}
-                             ref={this.props.attribute}
-                             attribute={this.props.attribute} />
-    );
+      <CountriesDropDownMenu {...this.props} ref={this.props.attribute} />
+    )
   },
 
   date() {
     return (
-      <RestDatePicker ref={this.props.attribute}
-                      model={this.props.resource}
-                      {...this.props} />
+      <RestDatePicker {...this.props} ref={this.props.attribute} />
     );
   },
 
   checkbox() {
     return (
-      <RestCheckbox ref={this.props.attribute}
-                    model={this.props.resource}
-                    {...this.props} />
+      <RestCheckbox {...this.props} ref={this.props.attribute} />
     )
   },
 
