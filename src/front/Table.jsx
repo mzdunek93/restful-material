@@ -1,7 +1,8 @@
 import React from "react";
-import _ from "underscore";
+import { extend, range, isFunction } from "underscore";
 import { IntlMixin } from "react-intl";
 import { Toolbar,
+         Table,
          ToolbarGroup,
          TextField,
          DropDownMenu,
@@ -54,12 +55,12 @@ var Controls = React.createClass({
       },
 
       a: {
-        textDecoration: 'none', 
+        textDecoration: 'none',
         color: 'inherit'
       }
     };
 
-    var pageLinks = _.range(this.props.count / this.props.perPage).map(function(i){
+    var pageLinks = range(this.props.count / this.props.perPage).map(function(i){
       var highlight = {}
       if(i === this.props.page)
         highlight.fontWeight = 'bold',
@@ -96,11 +97,11 @@ var Controls = React.createClass({
   }
 });
 
-var Table = React.createClass({
+module.exports = React.createClass({
   mixins: [IntlMixin],
 
   propTypes: {
-    data: React.PropTypes.object.isRequired,
+    spec: React.PropTypes.object.isRequired,
     resources: React.PropTypes.array.isRequired
   },
 
@@ -112,22 +113,10 @@ var Table = React.createClass({
   },
 
   getInitialState() {
-    return {page: 0, perPage: 5, filtered: this.props.resources};
-  },
-
-  resources(resources) {
-    // if filtered is not yet set resort to this.props.resources
-    var start = this.state.page * this.state.perPage,
-        out = [];
-    if(start > (resources.length - 1))
-      start = resources.length - this.state.perPage;
-    if(start < 0)
-      start = 0;
-
-    for(var i = start; (i < start + this.state.perPage) && (i < resources.length); i++)
-      out.push(resources[i])
-
-    return out
+    return {
+      page: 0,
+      perPage: 5
+    };
   },
 
   pageChange(page) {
@@ -138,15 +127,6 @@ var Table = React.createClass({
     this.setState({perPage: perPage})
   },
 
-  thead() {
-    return (
-      <tr>
-        {_.keys(this.props.data).map((title, i)=>
-          <th key={i}>{this.translateMaybe(title)}</th>)}
-      </tr>
-    );
-  },
-
   translateMaybe(title) {
     if(this.props.messages)
       return this.getIntlMessage(title)
@@ -154,45 +134,17 @@ var Table = React.createClass({
       return title
   },
 
-  tbody(resources) {
-    if(resources)
-      return this.resources(resources).map((r, i)=>{
-        var row = [];
-        Object.keys(this.props.data).map((title)=>{
-          var val = this.props.data[title];
-          if(_.isFunction(val))
-            // bind 'this' to have router
-            row.push(this.wrapInTd(val.bind(this)(r, i), title, 'cell-with-button'))
-          else
-            row.push(this.wrapInTd(r.get(val), title))
-        });
-        return <tr key={i}>{row}</tr>;
-      });
-    else
-      return (
-        <tr>
-          <td colSpan={Object.keys(this.props.data).length}>
-            {this.props.pendingMessage}
-          </td>
-        </tr>
-      )
-  },
-
-  wrapInTd(html, title, className = '') {
-    return (
-      <td data-title={title} className={className}>
-        {html}
-      </td>
-    )
-  },
-
-  filteredResources(filterName, filterValue) {
-    var resources = this.props.resources,
-        out = [];
+  filteredResources(title, filterValue) {
     filterValue = filterValue.toString().toLowerCase();
 
+    var resources = this.state.filtered;
+    var out = [];
+
+    if((resources || []).length === 0)
+      resources = this.props.resources;
+
     for(var i = 0; i < resources.length; i++){
-      var val = resources[i].get(this.props.data[filterName]);
+      var val = resources[i].get(this.props.spec[title]);
       // TODO: maybe for performance is better to use Regexp instead?
       if(val.toString().toLowerCase().indexOf(filterValue) !== -1)
         out.push(resources[i])
@@ -206,25 +158,18 @@ var Table = React.createClass({
     this.setState({filtered: this.filteredResources(title, filterValue)});
   },
 
-  filters() {
-    return (
-      <tr>
-        {Object.keys(this.props.data).map((title)=> {
-          if(this.props.headers[title])
-            return <th data-title={title}>{this.props.headers[title]()}</th>;
-          else if(_.isFunction(this.props.data[title]))
-            return <th data-title={title}></th>;
-          else
-            return (
-              <th data-title={title}>
-                <TextField ref={title}
-                           style={{display: 'table-cell'}}
-                           onChange={this.updateFilter.bind(this, title)} />
-              </th>
-            );
-         })}
-      </tr>
-    );
+  filter(title) {
+    if(this.props.headers[title])
+      return this.props.headers[title]();
+    else if(isFunction(this.props.spec[title]))
+      return '';
+    else
+      return (
+        <TextField ref={title}
+                   autoComplete="false"
+                   style={{display: 'table-cell'}}
+                   onChange={this.updateFilter.bind(this, title)} />
+      );
   },
 
   controls(resources) {
@@ -238,25 +183,62 @@ var Table = React.createClass({
       return <span />;
   },
 
+  headerColumns() {
+    return Object.keys(this.props.spec).reduce((out, title)=>
+      extend(out, {
+        [title]: {
+          content: (
+            <div>
+              <div> {this.translateMaybe(title)} </div>
+              <div> {this.filter(title)} </div>
+            </div>
+          )
+        }
+      }),
+      {})
+  },
+
+  rowData(resources) {
+    return resources.map((r, i)=> {
+      return Object.keys(this.props.spec).reduce((out, title)=> {
+        var field = this.props.spec[title];
+        var content;
+        if(isFunction(field))
+          content = field(r, i);
+        else
+          content = r.get(field);
+        return extend(out, {[title]: {content: content}});
+      }, {})
+    });
+  },
+
+  subset(resources) {
+    var subset = [];
+    var start = this.state.page * this.state.perPage;
+    var stop = start + this.state.perPage;
+    if(stop > resources.length)
+      stop = resources.length;
+
+    for(let i = start; i < stop; i++)
+      subset.push(resources[i]);
+
+    return subset;
+  },
+
   render() {
     var resources = this.state.filtered || this.props.resources;
 
+    if(!resources)
+      return <div />
+
     return (
-      <div className="table-responsive-vertical shadow-z-1">
-        <table className="table table-hover table-mc-light-blue table-with-filters">
-          <thead>
-            {this.thead()}
-            {this.filters()}
-          </thead>
-          <tbody>
-            {this.tbody(resources)}
-          </tbody>
-        </table>
+      <div>
+        <Table headerColumns={this.headerColumns()}
+               columnOrder={Object.keys(this.props.spec)}
+               rowData={this.rowData(this.subset(resources))}
+               {...this.props} />
         {this.controls(resources)}
       </div>
-
     )
   }
 });
-
-module.exports = Table;
