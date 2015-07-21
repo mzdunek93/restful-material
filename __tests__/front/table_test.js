@@ -1,10 +1,11 @@
 /* eslint-env jasmine */
 /* globals jest */
 
-jest.dontMock('../../src/front/Table');
+jest.dontMock('../../src/front/table/Table');
+jest.dontMock('../../src/front/table/Controls');
 jest.dontMock('../../src/back/Model');
 
-import Table from "../../src/front/Table";
+import Table from "../../src/front/table/Table";
 import Model from "../../src/back/Model";
 
 import { utils, renderIntoDocument } from "../helper";
@@ -12,7 +13,7 @@ import { utils, renderIntoDocument } from "../helper";
 describe('the Table component', () => {
   var component;
 
-  describe('pagination', () => {
+  describe('pagination is on', () => {
     beforeEach(() => {
       component = renderIntoDocument(Table, {
         spec: {'Foo title': 'foo'},
@@ -21,7 +22,7 @@ describe('the Table component', () => {
       })
     })
 
-    it('renders the row for each data', () => {
+    it('renders the rows for the first page only', () => {
       var trs = utils.scryRenderedDOMComponentsWithClass(component, 'mui-table-row');
 
       expect(trs.map((tr)=> tr.getDOMNode().textContent)).
@@ -34,6 +35,24 @@ describe('the Table component', () => {
 
       var trs = utils.scryRenderedDOMComponentsWithClass(component, 'mui-table-row');
       expect(trs[0].getDOMNode().textContent).toEqual('bar6');
+    })
+  })
+
+  describe('pagination is off', () => {
+    beforeEach(() => {
+      component = renderIntoDocument(Table, {
+        spec: {'Foo title': 'foo'},
+        pagination: false,
+        headers: {},
+        resources: [1, 2, 3, 4, 5, 6].map((i)=> new Model({foo: "bar" + i}))
+      })
+    })
+
+    it('renders all of the rows', () => {
+      var trs = utils.scryRenderedDOMComponentsWithClass(component, 'mui-table-row');
+
+      expect(trs.map((tr)=> tr.getDOMNode().textContent)).
+        toEqual(['bar1', 'bar2', 'bar3', 'bar4', 'bar5', 'bar6']);
     })
   })
 

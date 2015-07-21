@@ -14,7 +14,7 @@ import RestDatePicker from './front/RestDatePicker';
 import RestDropDownMenu from './front/RestDropDownMenu';
 import RestField from './front/RestField';
 import RestInput from './front/RestInput';
-import Table from './front/Table';
+import Table from './front/table/Table';
 import Info from './front/Info';
 
 var configure = (opts)=> Config.store(opts)

@@ -1,101 +1,8 @@
 import React from "react";
-import { extend, range, isFunction } from "underscore";
+import { extend, isFunction } from "underscore";
 import { IntlMixin } from "react-intl";
-import { Toolbar,
-         Table,
-         ToolbarGroup,
-         TextField,
-         DropDownMenu,
-         Styles,
-         Mixins } from "material-ui";
-
-var Controls = React.createClass({
-  mixins: [Mixins.StylePropable ],
-
-  propTypes: {
-    onPageChange: React.PropTypes.func.isRequired,
-    onPerPageChange: React.PropTypes.func.isRequired,
-    count: React.PropTypes.number.isRequired,
-    page: React.PropTypes.number.isRequired,
-    perPage: React.PropTypes.number.isRequired
-  },
-
-  perPageChange(_, __, item) {
-    this.props.onPerPageChange(item.payload);
-  },
-
-  pageChange(e, page) {
-    e.preventDefault();
-    this.props.onPageChange(page);
-  },
-
-  menuItems: [
-    {payload: 5, text: 5},
-    {payload: 10, text: 10},
-    {payload: 20, text: 20},
-    {payload: 50, text: 50},
-    {payload: 100, text: 100}
-  ],
-
-  render() {
-    var styles = {
-      toolbar: {
-        fontWeight: Styles.Typography.fontWeightNormal,
-        color: Styles.Typography.textLightBlack
-      },
-
-      pageLinks: {
-        paddingLeft: '24px',
-        lineHeight: '56px'
-      },
-
-      desc: {
-        position: 'relative',
-        top: '-24px'
-      },
-
-      a: {
-        textDecoration: 'none',
-        color: 'inherit'
-      }
-    };
-
-    var pageLinks = range(this.props.count / this.props.perPage).map(function(i){
-      var highlight = {}
-      if(i === this.props.page)
-        highlight.fontWeight = 'bold',
-        highlight.color = Styles.Colors.pink500
-
-      return (
-        <span style={styles.pageLinks} className="pageLinks">
-          <a href="#"
-             key={"a" + i}
-             style={this.mergeAndPrefix(styles.a, highlight)}
-             onClick={function(e){this.pageChange(e, i)}.bind(this)}>
-            {i + 1}
-          </a>
-        </span>
-      )
-    }.bind(this))
-
-    return (
-      <Toolbar style={styles.toolbar}>
-        <ToolbarGroup style={styles.group} key={0} float="left" >
-          {pageLinks}
-        </ToolbarGroup>
-        <ToolbarGroup style={styles.group} key={1} float="right" >
-          <span style={styles.desc}>
-            Items per page
-          </span>
-          <span>
-            <DropDownMenu menuItems={this.menuItems}
-                          onChange={this.perPageChange} />
-          </span>
-        </ToolbarGroup>
-      </Toolbar>
-    )
-  }
-});
+import { Table, TextField } from "material-ui";
+import Controls from "./Controls";
 
 module.exports = React.createClass({
   mixins: [IntlMixin],
@@ -108,14 +15,17 @@ module.exports = React.createClass({
   getDefaultProps() {
     return {
       pendingMessage: "Loading...",
-      headers: {}
+      headers: {},
+      pagination: true
     }
   },
 
   getInitialState() {
     return {
       page: 0,
-      perPage: 5
+      perPage: 5,
+      resourcesFn: this.props.pagination ? this.subset : this.all,
+      controlsFn: this.props.pagination ? this.controls : ()=> <span />
     };
   },
 
@@ -173,7 +83,7 @@ module.exports = React.createClass({
   },
 
   controls(resources) {
-    if(resources && resources.length > this.state.perPage)
+    if(resources.length > this.state.perPage)
       return <Controls onPageChange={this.pageChange}
                        onPerPageChange={this.perPageChange}
                        count={resources.length}
@@ -225,6 +135,10 @@ module.exports = React.createClass({
     return subset;
   },
 
+  all(resources) {
+    return resources;
+  },
+
   render() {
     var resources = this.state.filtered || this.props.resources;
 
@@ -235,9 +149,9 @@ module.exports = React.createClass({
       <div>
         <Table headerColumns={this.headerColumns()}
                columnOrder={Object.keys(this.props.spec)}
-               rowData={this.rowData(this.subset(resources))}
+               rowData={this.rowData(this.state.resourcesFn(resources))}
                {...this.props} />
-        {this.controls(resources)}
+        {this.state.controlsFn(resources)}
       </div>
     )
   }
