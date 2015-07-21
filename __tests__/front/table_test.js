@@ -18,6 +18,7 @@ describe('the Table component', () => {
       component = renderIntoDocument(Table, {
         spec: {'Foo title': 'foo'},
         headers: {},
+        perPage: 5,
         resources: [1, 2, 3, 4, 5, 6].map((i)=> new Model({foo: "bar" + i}))
       })
     })
@@ -43,6 +44,7 @@ describe('the Table component', () => {
       component = renderIntoDocument(Table, {
         spec: {'Foo title': 'foo'},
         pagination: false,
+        perPage: 5,
         headers: {},
         resources: [1, 2, 3, 4, 5, 6].map((i)=> new Model({foo: "bar" + i}))
       })

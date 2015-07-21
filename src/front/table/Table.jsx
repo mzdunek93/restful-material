@@ -16,14 +16,16 @@ module.exports = React.createClass({
     return {
       pendingMessage: "Loading...",
       headers: {},
-      pagination: true
+      pagination: true,
+      perPage: 20,
+      page: 0
     }
   },
 
   getInitialState() {
     return {
-      page: 0,
-      perPage: 5,
+      perPage: this.props.perPage,
+      page: this.props.page,
       resourcesFn: this.props.pagination ? this.subset : this.all,
       controlsFn: this.props.pagination ? this.controls : ()=> <span />
     };
