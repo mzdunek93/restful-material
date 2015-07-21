@@ -34,7 +34,11 @@ module.exports = React.createClass({
   },
 
   perPageChange(perPage) {
-    this.setState({perPage: perPage})
+    var length = (this.state.filtered || this.props.resources).length;
+    if((perPage * this.state.page) > length)
+      this.setState({perPage: perPage, page: parseInt(length / perPage)});
+    else
+      this.setState({perPage: perPage})
   },
 
   translateMaybe(title) {
@@ -83,14 +87,11 @@ module.exports = React.createClass({
   },
 
   controls(resources) {
-    if(resources.length > this.state.perPage)
-      return <Controls onPageChange={this.pageChange}
-                       onPerPageChange={this.perPageChange}
-                       count={resources.length}
-                       page={this.state.page}
-                       perPage={this.state.perPage} />;
-    else
-      return <span />;
+    return <Controls onPageChange={this.pageChange}
+                     onPerPageChange={this.perPageChange}
+                     count={resources.length}
+                     page={this.state.page}
+                     perPage={this.state.perPage} />;
   },
 
   headerColumns() {
