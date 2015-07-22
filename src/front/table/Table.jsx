@@ -120,7 +120,7 @@ module.exports = React.createClass({
           content = field(r, i);
         else
           content = r.get(field);
-        return extend(out, {[title]: {content: content}});
+        return extend(out, {[title]: {content: content || ''}});
       }, {})
     });
   },
