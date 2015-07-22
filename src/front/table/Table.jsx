@@ -17,7 +17,7 @@ module.exports = React.createClass({
       pendingMessage: "Loading...",
       headers: {},
       pagination: true,
-      perPage: 20,
+      perPage: 10,
       page: 0
     }
   },
