@@ -44,7 +44,7 @@ module.exports = React.createClass({
   },
 
   translateMaybe(title) {
-    if(this.props.messages)
+    if(this.props.messages && title)
       return this.getIntlMessage(title)
     else
       return title
