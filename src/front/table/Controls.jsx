@@ -4,7 +4,8 @@ import { Toolbar,
          ToolbarGroup,
          DropDownMenu,
          Styles,
-         Mixins } from "material-ui";
+         Mixins,
+         FloatingActionButton } from "material-ui";
 
 module.exports = React.createClass({
   mixins: [Mixins.StylePropable ],
@@ -27,66 +28,75 @@ module.exports = React.createClass({
   },
 
   menuItems: [
-    {payload: 5, text: 5},
-    {payload: 10, text: 10},
-    {payload: 20, text: 20},
-    {payload: 50, text: 50},
-    {payload: 100, text: 100}
+    {payload: 5, text: 'Items per page 5'},
+    {payload: 10, text: 'Items per page 10'},
+    {payload: 20, text: 'Items per page 20'},
+    {payload: 50, text: 'Items per page 50'}
   ],
 
   render() {
     var styles = {
       toolbar: {
         fontWeight: Styles.Typography.fontWeightNormal,
-        color: Styles.Typography.textLightBlack
+        color: Styles.Typography.textLightBlack,
+        borderTop: `1px solid ${ Styles.Colors.grey300 }`,
+        backgroundColor: Styles.Colors.white
       },
 
       pageLinks: {
-        paddingLeft: '24px',
-        lineHeight: '56px'
+
+        container: {
+          position: 'absolute',
+          top: 7,
+          display: 'flex'
+        },
+
+        floatingActionButton: {
+          margin: '0 4px'
+        }
       },
 
-      desc: {
-        position: 'relative',
-        top: '-24px'
-      },
-
-      a: {
-        textDecoration: 'none',
-        color: 'inherit'
+      span: {
+        lineHeight: 40,
+        color: Styles.Colors.Gray
       }
     };
 
     var pageLinks = range(this.props.count / this.props.perPage).map(function(i){
+      var secondary = false
       var highlight = {}
       if(i === this.props.page)
+        secondary = true
         highlight.fontWeight = 'bold',
-        highlight.color = Styles.Colors.pink500
+        highlight.color = Styles.Colors.white
 
       return (
-        <span style={styles.pageLinks} className="pageLinks">
-          <a href="#"
-             key={"a" + i}
-             style={this.mergeAndPrefix(styles.a, highlight)}
-             onClick={function(e){this.pageChange(e, i)}.bind(this)}>
+        <FloatingActionButton mini={true}
+                              linkButton={true}
+                              secondary={secondary}
+                              onClick={function(e){this.pageChange(e, i)}.bind(this)}
+                              key={"a" + i}
+                              style={this.mergeAndPrefix(styles.pageLinks.floatingActionButton, highlight)}>
+
+          <span style={styles.span}>
             {i + 1}
-          </a>
-        </span>
+          </span>
+        </FloatingActionButton>
       )
     }.bind(this))
 
     return (
       <Toolbar style={styles.toolbar}>
-        <ToolbarGroup style={styles.group} key={0} float="left" >
-          {pageLinks}
+        <ToolbarGroup key={0} float="left" >
+          <div style={styles.pageLinks.container}>
+            {pageLinks}
+          </div>
         </ToolbarGroup>
-        <ToolbarGroup style={styles.group} key={1} float="right" >
-          <span style={styles.desc}>
-            Items per page
-          </span>
+        <ToolbarGroup key={1} float="right" >
           <span>
             <DropDownMenu menuItems={this.menuItems}
-                          onChange={this.perPageChange} />
+                          onChange={this.perPageChange}
+                          selectedIndex={this.menuItems.map(function(i) { return i.payload; }).indexOf(this.props.perPage)} />
           </span>
         </ToolbarGroup>
       </Toolbar>
