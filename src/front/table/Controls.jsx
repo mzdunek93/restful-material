@@ -63,10 +63,10 @@ module.exports = React.createClass({
     };
 
     var pageLinks = range(this.props.count / this.props.perPage).map(function(i){
-      var secondary = false
+      var secondary = true
       var highlight = {}
       if(i === this.props.page)
-        secondary = true
+        secondary = false
         highlight.fontWeight = 'bold',
         highlight.color = Styles.Colors.white
 
