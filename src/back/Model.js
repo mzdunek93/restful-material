@@ -58,6 +58,22 @@ class Model {
     keys.forEach((key)=> out[key] = this.get(key));
     return out;
   }
+
+  validation() {
+    return {};
+  }
+
+  check(name) {
+    let validation = this.validation()[name];
+    if(!validation)
+      return;
+
+    if(validation.check(this.get(name)))
+      delete this.errors[name];
+    else
+      this.errors[name] = validation.message;
+  }
+
 }
 
 module.exports = Model;
