@@ -74,6 +74,15 @@ class Model {
       this.errors[name] = validation.message;
   }
 
+  isValid() {
+    Object.keys(this.validation()).forEach((name)=> this.check(name))
+
+    return Object.keys(this.errors).length === 0;
+  }
+
+  isInvalid() {
+    return !this.isValid();
+  }
 }
 
 module.exports = Model;
