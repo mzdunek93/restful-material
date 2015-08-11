@@ -24,7 +24,7 @@ module.exports = React.createClass({
 
   getInitialState() {
     return {
-      perPage: this.props.perPage,
+      perPage: parseInt(window.localStorage.getItem('perPage') || this.props.perPage),
       page: this.props.page,
       resourcesFn: this.props.pagination ? this.subset : this.all,
       controlsFn: this.props.pagination ? this.controls : ()=> <span />
@@ -36,6 +36,7 @@ module.exports = React.createClass({
   },
 
   perPageChange(perPage) {
+    window.localStorage.setItem('perPage', perPage);
     var length = (this.state.filtered || this.props.resources).length;
     if((perPage * this.state.page) > length)
       this.setState({perPage: perPage, page: parseInt(length / perPage)});
