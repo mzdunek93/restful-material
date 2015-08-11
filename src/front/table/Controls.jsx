@@ -2,6 +2,7 @@ import React from "react";
 import { range } from "underscore";
 import { Toolbar,
          ToolbarGroup,
+         ToolbarTitle,
          DropDownMenu,
          Styles,
          Mixins,
@@ -18,8 +19,9 @@ module.exports = React.createClass({
     perPage: React.PropTypes.number.isRequired
   },
 
-  perPageChange(_, __, item) {
-    this.props.onPerPageChange(item.payload);
+  perPageChange(e, n) {
+    e.preventDefault();
+    this.props.onPerPageChange(n);
   },
 
   pageChange(e, page) {
@@ -27,77 +29,79 @@ module.exports = React.createClass({
     this.props.onPageChange(page);
   },
 
-  menuItems: [
-    {payload: 5, text: 'Items per page 5'},
-    {payload: 10, text: 'Items per page 10'},
-    {payload: 20, text: 'Items per page 20'},
-    {payload: 50, text: 'Items per page 50'}
-  ],
+  menuItems: [5, 10, 20, 50],
 
   render() {
     var styles = {
       toolbar: {
         fontWeight: Styles.Typography.fontWeightNormal,
-        color: Styles.Typography.textLightBlack,
         borderTop: `1px solid ${ Styles.Colors.grey300 }`,
         backgroundColor: Styles.Colors.white
       },
 
-      pageLinks: {
-
-        container: {
-          position: 'absolute',
-          top: 7,
-          display: 'flex'
-        },
-
-        floatingActionButton: {
-          margin: '0 4px'
-        }
+      toolbarTitle: {
+        color: Styles.Colors.Black,
+        fontSize: '1em'
       },
 
       span: {
-        lineHeight: 40,
-        color: Styles.Colors.Gray
+        lineHeight: '56px'
+      },
+
+      a: {
+        color: Styles.Colors.Black,
+        padding: '10px',
+        cursor: 'pointer'
+      },
+
+      active: {
+        color: Styles.Colors.red900,
+        textDecoration: 'none',
+        fontWeight: 500
       }
     };
 
     var pageLinks = range(this.props.count / this.props.perPage).map(function(i){
-      var secondary = true
-      var highlight = {}
+      var active = {};
       if(i === this.props.page)
-        secondary = false
-        highlight.fontWeight = 'bold',
-        highlight.color = Styles.Colors.white
+        active = styles.active;
 
       return (
-        <FloatingActionButton mini={true}
-                              linkButton={true}
-                              secondary={secondary}
-                              onClick={function(e){this.pageChange(e, i)}.bind(this)}
-                              key={"a" + i}
-                              style={this.mergeAndPrefix(styles.pageLinks.floatingActionButton, highlight)}>
-
-          <span style={styles.span}>
+        <span style={styles.span}>
+          <a  onClick={function(e){this.pageChange(e, i)}.bind(this)}
+              key={"a" + i}
+              style={this.mergeAndPrefix(styles.a, active)} >
             {i + 1}
-          </span>
-        </FloatingActionButton>
+          </a>
+        </span>
+        
+      )
+    }.bind(this))
+
+    var perPage = this.menuItems.map(function (i) {
+      var active = {};
+      if(i === this.props.perPage)
+        active = styles.active;
+
+      return (
+        <span style={styles.span}>
+          <a  style={this.mergeAndPrefix(styles.a, active)}
+              onClick={function(e){this.perPageChange(e, i)}.bind(this)}
+              key={i}>
+            {i}
+          </a>
+        </span>
       )
     }.bind(this))
 
     return (
       <Toolbar style={styles.toolbar}>
         <ToolbarGroup key={0} float="left" >
-          <div style={styles.pageLinks.container}>
-            {pageLinks}
-          </div>
+          {pageLinks}
         </ToolbarGroup>
         <ToolbarGroup key={1} float="right" >
-          <span>
-            <DropDownMenu menuItems={this.menuItems}
-                          onChange={this.perPageChange}
-                          selectedIndex={this.menuItems.map(function(i) { return i.payload; }).indexOf(this.props.perPage)} />
-          </span>
+          <ToolbarTitle text="items per page" style={styles.toolbarTitle} />
+          {perPage}
         </ToolbarGroup>
       </Toolbar>
     )
