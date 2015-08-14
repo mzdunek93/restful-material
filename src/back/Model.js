@@ -64,13 +64,13 @@ class Model {
   }
 
   check(name) {
+    delete this.errors[name];
+
     let validation = this.validation()[name];
     if(!validation)
       return;
 
-    if(validation.check(this.get(name)))
-      delete this.errors[name];
-    else
+    if(!validation.check(this.get(name)))
       this.errors[name] = validation.message;
   }
 
