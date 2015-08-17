@@ -3,6 +3,7 @@ import { extend, isFunction } from "underscore";
 import { IntlMixin } from "react-intl";
 import { Table, TextField } from "material-ui";
 import Controls from "./Controls";
+import { without, uniq } from "underscore";
 
 module.exports = React.createClass({
   mixins: [IntlMixin],
@@ -26,13 +27,14 @@ module.exports = React.createClass({
     return {
       perPage: parseInt(window.localStorage.getItem('perPage') || this.props.perPage),
       page: this.props.page,
+      activeFilters: [],
       resourcesFn: this.props.pagination ? this.subset : this.all,
       controlsFn: this.props.pagination ? this.controls : ()=> <span />
     };
   },
 
   pageChange(page) {
-    this.setState({page: page})
+    this.setState({page: page});
   },
 
   perPageChange(perPage) {
@@ -41,20 +43,19 @@ module.exports = React.createClass({
     if((perPage * this.state.page) > length)
       this.setState({perPage: perPage, page: parseInt(length / perPage)});
     else
-      this.setState({perPage: perPage})
+      this.setState({perPage: perPage});
   },
 
   translateMaybe(title) {
     if(this.props.messages && title)
-      return this.getIntlMessage(title)
+      return this.getIntlMessage(title);
     else
-      return title
+      return title;
   },
 
-  filteredResources(title, filterValue) {
+  filteredResources(title, filterValue, resources = this.state.filtered) {
     filterValue = filterValue.toString().toLowerCase();
 
-    var resources = this.state.filtered;
     var out = [];
 
     if((resources || []).length === 0)
@@ -63,16 +64,36 @@ module.exports = React.createClass({
     for(var i = 0; i < resources.length; i++){
       var val = resources[i].get(this.props.spec[title]);
       // TODO: maybe for performance is better to use Regexp instead?
-      if(val && val.toString().toLowerCase().indexOf(filterValue) !== -1)
-        out.push(resources[i])
+      if((val && val.toString().toLowerCase().indexOf(filterValue) !== -1) ||
+        filterValue === '')
+        out.push(resources[i]);
     }
 
     return out;
   },
 
+  removeFilter(title) {
+    var out;
+
+    for(var i = 0; i < this.state.activeFilters.length; i++)
+      out = this.filteredResources(this.state.activeFilters[i], '', this.props.resources);
+
+    this.setState({
+      filtered: out,
+      activeFilters: without(this.state.activeFilters, title)
+    });
+  },
+
   updateFilter(title) {
     var filterValue = this.refs[title].getValue();
-    this.setState({filtered: this.filteredResources(title, filterValue)});
+
+    if(filterValue === '')
+      this.removeFilter(title);
+    else
+      this.setState({
+        filtered: this.filteredResources(title, filterValue),
+        activeFilters: uniq(this.state.activeFilters.concat([title]))
+      });
   },
 
   filter(title) {
