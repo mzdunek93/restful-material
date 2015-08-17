@@ -1,10 +1,10 @@
 import React from "react";
-import { DropDownMenu } from "material-ui";
+import { SelectField } from "material-ui";
 
-// Sadly the DropDownMenu from material-ui does not have getValue() method.
+// Sadly the SelectField from material-ui does not have getValue() method.
 // This fixes this.
 // Also the "selected" value for the drop down has to be the first element
-// in the array passed to DropDownMenu's menuItems prop.
+// in the array passed to SelectField's menuItems prop.
 // This does the work of ordering the array correctly.
 module.exports = React.createClass({
   propTypes: {
@@ -59,12 +59,13 @@ module.exports = React.createClass({
     return (
       <span>
         <label>{this.props.label}</label>
-        <DropDownMenu id={this.props.id || this.props.attribute}
-                      errorText={this.props.model.errors[this.props.attribute]}
-                      onChange={this._onChange}
-                      selectedIndex={this.state.selectedIndex}
-                      menuItems={this.items()}
-                      className={this.props.className} />
+        <SelectField id={this.props.id || this.props.attribute}
+                     {...this.props}
+                     errorText={this.props.model.errors[this.props.attribute]}
+                     onChange={this._onChange}
+                     selectedIndex={this.state.selectedIndex}
+                     menuItems={this.items()}
+                     className={this.props.className} />
       </span>
     )
   }

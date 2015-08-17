@@ -1,21 +1,21 @@
 /* eslint-env jasmine */
 /* globals jest */
 
-jest.dontMock('../../src/front/CountriesDropDownMenu');
+jest.dontMock('../../src/front/CountriesSelectField');
 jest.dontMock('../../src/back/Model');
 
-import CountriesDropDownMenu from "../../src/front/CountriesDropDownMenu";
+import CountriesSelectField from "../../src/front/CountriesSelectField";
 
-describe('the CountriesDropDownMenu component', () => {
+describe('the CountriesSelectField component', () => {
   describe('statics', () => {
     it('can return all alfa2 countries code', () => {
-      var codes = CountriesDropDownMenu.alfa2CountriesCodes();
+      var codes = CountriesSelectField.alfa2CountriesCodes();
       expect(codes.length).toEqual(249);
       expect(codes[0]).toEqual('AF');
     })
 
     it('can return all alfa3 countries code', () => {
-      var codes = CountriesDropDownMenu.alfa3CountriesCodes();
+      var codes = CountriesSelectField.alfa3CountriesCodes();
       expect(codes.length).toEqual(249);
       expect(codes[0]).toEqual('AFG');
     })

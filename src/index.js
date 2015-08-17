@@ -9,9 +9,9 @@ import Config from './back/Config';
 import Serialization from './back/Serialization';
 import Savepoint from './back/Savepoint';
 import Buttons from './front/Buttons';
-import CountriesDropDownMenu from './front/CountriesDropDownMenu';
+import CountriesSelectField from './front/CountriesSelectField';
 import RestDatePicker from './front/RestDatePicker';
-import RestDropDownMenu from './front/RestDropDownMenu';
+import RestSelectField from './front/RestSelectField';
 import RestField from './front/RestField';
 import RestInput from './front/RestInput';
 import Table from './front/table/Table';
@@ -28,9 +28,9 @@ module.exports = {
   Savepoint: Savepoint,
   createStore: createStore,
   Buttons: Buttons,
-  CountriesDropDownMenu: CountriesDropDownMenu,
+  CountriesSelectField: CountriesSelectField,
   RestDatePicker: RestDatePicker,
-  RestDropDownMenu: RestDropDownMenu,
+  RestSelectField: RestSelectField,
   RestField: RestField,
   RestInput: RestInput,
   Table: Table,

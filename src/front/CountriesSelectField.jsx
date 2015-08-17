@@ -1,7 +1,7 @@
 import React from "react";
-import RestDropDownMenu from "./RestDropDownMenu";
+import RestSelectField from "./RestSelectField";
 
-var CountriesDropDownMenu = React.createClass({
+var CountriesSelectField = React.createClass({
   propTypes: {
     model: React.PropTypes.object
   },
@@ -17,28 +17,28 @@ var CountriesDropDownMenu = React.createClass({
   },
 
   items() {
-    return CountriesDropDownMenu.countries.map((c)=> {
+    return CountriesSelectField.countries.map((c)=> {
       return {text: c.text, payload: c[this.props.codeStandard]}
     });
   },
 
   render() {
     return (
-      <RestDropDownMenu {...this.props}
-                        items={this.items()}
-                        sort={this.props.sort}
-                        ref="menu"
-                        className="country-select" />
+      <RestSelectField {...this.props}
+                       items={this.items()}
+                       sort={this.props.sort}
+                       ref="menu"
+                       className="country-select" />
     )
   },
 
   statics: {
     alfa2CountriesCodes() {
-      return CountriesDropDownMenu.countries.map((c)=> c.alfa2);
+      return CountriesSelectField.countries.map((c)=> c.alfa2);
     },
 
     alfa3CountriesCodes() {
-      return CountriesDropDownMenu.countries.map((c)=> c.alfa3);
+      return CountriesSelectField.countries.map((c)=> c.alfa3);
     },
 
     countries: [
@@ -295,4 +295,4 @@ var CountriesDropDownMenu = React.createClass({
   }
 });
 
-module.exports = CountriesDropDownMenu;
+module.exports = CountriesSelectField;

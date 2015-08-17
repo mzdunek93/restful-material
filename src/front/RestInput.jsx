@@ -1,10 +1,10 @@
 import React from "react";
 import RestField from "./RestField";
 import RestDatePicker from "./RestDatePicker";
-import RestDropDownMenu from "./RestDropDownMenu";
+import RestSelectField from "./RestSelectField";
 import RestRadioButtonGroup from "./RestRadioButtonGroup";
 import RestCheckbox from "./RestCheckbox";
-import CountriesDropDownMenu from "./CountriesDropDownMenu";
+import CountriesSelectField from "./CountriesSelectField";
 
 var RestInput = React.createClass({
   propTypes: {
@@ -25,7 +25,7 @@ var RestInput = React.createClass({
   inputs() {
     return {
       string: this.restField,
-      dropDown: this.restDropDownMenu,
+      dropDown: this.restSelectField,
       radio: this.radioButtonGroup,
       country: this.country,
       date: this.date,
@@ -39,9 +39,9 @@ var RestInput = React.createClass({
     )
   },
 
-  restDropDownMenu() {
+  restSelectField() {
     return (
-      <RestDropDownMenu {...this.props} ref={this.props.attribute} />
+      <RestSelectField {...this.props} ref={this.props.attribute} />
     )
   },
 
@@ -53,7 +53,7 @@ var RestInput = React.createClass({
 
   country() {
     return (
-      <CountriesDropDownMenu {...this.props} ref={this.props.attribute} />
+      <CountriesSelectField {...this.props} ref={this.props.attribute} />
     )
   },
 
