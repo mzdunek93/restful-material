@@ -63,7 +63,7 @@ module.exports = React.createClass({
     for(var i = 0; i < resources.length; i++){
       var val = resources[i].get(this.props.spec[title]);
       // TODO: maybe for performance is better to use Regexp instead?
-      if(val.toString().toLowerCase().indexOf(filterValue) !== -1)
+      if(val && val.toString().toLowerCase().indexOf(filterValue) !== -1)
         out.push(resources[i])
     }
 
