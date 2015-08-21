@@ -3,7 +3,6 @@ import { range } from "underscore";
 import { Toolbar,
          ToolbarGroup,
          ToolbarTitle,
-         DropDownMenu,
          Styles,
          Mixins,
          FloatingActionButton } from "material-ui";
