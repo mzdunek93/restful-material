@@ -58,9 +58,9 @@ module.exports = React.createClass({
   render() {
     return (
       <span>
-        <label>{this.props.label}</label>
         <SelectField id={this.props.id || this.props.attribute}
                      {...this.props}
+                     floatingLabelText={this.props.label}
                      errorText={this.props.model.errors[this.props.attribute]}
                      onChange={this._onChange}
                      value={this.props.items[this.state.selectedIndex].payload}
