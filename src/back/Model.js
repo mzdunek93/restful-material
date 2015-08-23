@@ -53,9 +53,15 @@ class Model {
   asJSON(keys) {
     if(!keys)
       keys = Object.keys(this.map)
+
     var out = {};
 
-    keys.forEach((key)=> out[key] = this.get(key));
+    keys.forEach((key)=> {
+      let val = this.get(key);
+
+      out[key] = _.isDate(val) ? val.toLocaleDateString() : val;
+    });
+
     return out;
   }
 
