@@ -2,6 +2,7 @@ import React from "react";
 import { IntlMixin } from "react-intl";
 import { Table, TextField } from "material-ui";
 import Controls from "./Controls";
+import Config from "../back/Config";
 import { without, uniq, isDate, extend, isFunction } from "underscore";
 
 module.exports = React.createClass({
@@ -19,7 +20,7 @@ module.exports = React.createClass({
       pagination: true,
       perPage: 10,
       page: 0,
-      locale: navigator.language || navigator.userLanguage
+      locale: Config.get('locale') || navigator.language || navigator.userLanguage
     }
   },
 
