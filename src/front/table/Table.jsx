@@ -1,9 +1,8 @@
 import React from "react";
-import { extend, isFunction } from "underscore";
 import { IntlMixin } from "react-intl";
 import { Table, TextField } from "material-ui";
 import Controls from "./Controls";
-import { without, uniq } from "underscore";
+import { without, uniq, isDate, extend, isFunction } from "underscore";
 
 module.exports = React.createClass({
   mixins: [IntlMixin],
@@ -142,6 +141,10 @@ module.exports = React.createClass({
           content = field(r, i);
         else
           content = r.get(field);
+
+        if(isDate(content))
+          content = content.toLocaleDateString();
+
         return extend(out, {[title]: {content: content || ''}});
       }, {})
     });
