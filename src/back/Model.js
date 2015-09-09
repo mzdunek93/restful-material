@@ -14,6 +14,17 @@ class Model {
     return this.map[key] = value;
   }
 
+  setDate(key) {
+    var value = this.get(key);
+    if(this.isPresent(value)) return '';
+
+    value = new Date(value);
+    if(isNaN(value))
+      return '';
+    else
+      return this.set(key, value);
+  }
+
   update(map) {
     this.map = _.extend(this.map, map);
     return this;
@@ -43,6 +54,10 @@ class Model {
   isBlank(attribute) {
     var value = this.get(attribute);
     return _.isNull(value) || _.isUndefined(value) || value === '';
+  }
+
+  isPresent(attribute) {
+    return !this.isBlank(attribute);
   }
 
   setDefault(attribute, value) {
