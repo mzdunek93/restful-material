@@ -18,7 +18,8 @@ module.exports = React.createClass({
       headers: {},
       pagination: true,
       perPage: 10,
-      page: 0
+      page: 0,
+      locale: navigator.language || navigator.userLanguage
     }
   },
 
@@ -143,7 +144,7 @@ module.exports = React.createClass({
           content = r.get(field);
 
         if(isDate(content))
-          content = content.toLocaleDateString();
+          content = content.toLocaleDateString(this.props.locale);
 
         return extend(out, {[title]: {content: content || ''}});
       }, {})
