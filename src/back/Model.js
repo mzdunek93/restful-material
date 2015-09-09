@@ -25,6 +25,10 @@ class Model {
       return this.set(key, value);
   }
 
+  setDates(keys) {
+    _.each(keys, this.setDate.bind(this));
+  }
+
   update(map) {
     this.map = _.extend(this.map, map);
     return this;
