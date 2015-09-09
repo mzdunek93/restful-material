@@ -2,7 +2,7 @@ import React from "react";
 import { IntlMixin } from "react-intl";
 import { Table, TextField } from "material-ui";
 import Controls from "./Controls";
-import Config from "../back/Config";
+import Config from "../../back/Config";
 import { without, uniq, isDate, extend, isFunction } from "underscore";
 
 module.exports = React.createClass({
