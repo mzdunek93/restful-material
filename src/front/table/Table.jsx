@@ -1,6 +1,12 @@
 import React from "react";
 import { IntlMixin } from "react-intl";
-import { Table, TextField } from "material-ui";
+import { Table,
+         TextField,
+         TableHeader,
+         TableBody,
+         TableHeaderColumn,
+         TableRow,
+         TableRowColumn } from "material-ui";
 import Controls from "./Controls";
 import Config from "../../back/Config";
 import { without, uniq, isDate, extend, isFunction } from "underscore";
@@ -15,6 +21,13 @@ module.exports = React.createClass({
 
   getDefaultProps() {
     return {
+      tableProps: {
+        multiSelectable: false,
+        selectable: false
+      },
+      headerProps: {
+        enableSelectAll: false
+      },
       pendingMessage: "Loading...",
       headers: {},
       pagination: true,
@@ -120,35 +133,36 @@ module.exports = React.createClass({
   },
 
   headerColumns() {
-    return Object.keys(this.props.spec).reduce((out, title)=>
-      extend(out, {
-        [title]: {
-          content: (
-            <div>
-              <div> {this.translateMaybe(title)} </div>
-              <div> {this.filter(title)} </div>
-            </div>
-          )
-        }
-      }),
-      {})
+    return Object.keys(this.props.spec).map((title, i)=>
+      <TableHeaderColumn key={i}>
+        {this.translateMaybe(title)}
+      </TableHeaderColumn>)
   },
 
-  rowData(resources) {
+  filterColumns() {
+    return Object.keys(this.props.spec).map((title, i)=>
+      <TableHeaderColumn key={i}>
+        {this.filter(title)}
+      </TableHeaderColumn>)
+  },
+
+  body(resources) {
     return resources.map((r, i)=> {
-      return Object.keys(this.props.spec).reduce((out, title)=> {
-        var field = this.props.spec[title];
-        var content;
-        if(isFunction(field))
-          content = field(r, i);
-        else
-          content = r.get(field);
+      return <TableRow key={i}>
+        {Object.keys(this.props.spec).map((title)=> {
+          var field = this.props.spec[title];
+          var content;
+          if(isFunction(field))
+            content = field(r, i);
+          else
+            content = r.get(field);
 
-        if(isDate(content))
-          content = content.toLocaleDateString(this.props.locale);
+          if(isDate(content))
+            content = content.toLocaleDateString(this.props.locale);
 
-        return extend(out, {[title]: {content: content || ''}});
-      }, {})
+          return <TableRowColumn>{content}</TableRowColumn>
+        })};
+      </TableRow>
     });
   },
 
@@ -177,10 +191,16 @@ module.exports = React.createClass({
 
     return (
       <div>
-        <Table headerColumns={this.headerColumns()}
-               columnOrder={Object.keys(this.props.spec)}
-               rowData={this.rowData(this.state.resourcesFn(resources))}
-               {...this.props} />
+        <Table {...this.props.tableProps} >
+          <TableHeader {...this.props.headerProps} >
+            <TableRow>{this.headerColumns()}</TableRow>
+            <TableRow>{this.filterColumns()}</TableRow>
+          </TableHeader>
+          <TableBody>
+            {this.body(this.state.resourcesFn(resources))}
+          </TableBody>
+        </Table>
+
         {this.state.controlsFn(resources)}
       </div>
     )
