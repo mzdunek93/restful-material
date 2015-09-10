@@ -15,10 +15,9 @@ class Model {
   }
 
   setDate(key) {
-    var value = this.get(key);
-    if(this.isBlank(value)) return '';
+    if(this.isBlank(key)) return '';
 
-    value = new Date(value);
+    var value = new Date(this.get(key));
     if(isNaN(value))
       return '';
     else
