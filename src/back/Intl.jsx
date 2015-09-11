@@ -2,6 +2,8 @@ import React from "react";
 import _ from "underscore";
 import { IntlMixin } from "react-intl";
 import { FormattedMessage, FormattedHTMLMessage, FormattedNumber } from "react-intl";
+import Intl from "intl";
+import Config from "./Config";
 
 var MessageComponent = React.createClass({
   mixins: [IntlMixin],
@@ -16,7 +18,7 @@ var MessageComponent = React.createClass({
   }
 });
 
-class Intl {
+class RestIntl {
   constructor(messages) {
     this.messages = messages;
   }
@@ -39,9 +41,18 @@ class Intl {
     return <FormattedNumber {...props} value={value} />
   }
 
-  currency(value, props = {}) {
-    return this.number(value, _.extend(props, {style: 'currency'}));
+  currency(value, currency, props = {}) {
+    props.style = "currency"
+    props.currency = currency;
+    props = _.extend({
+      locales: Config.get('currencyLocale') || Config.get('locale') ||
+                 navigator.language || navigator.userLanguage,
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+    }, props);
+
+    return Intl.NumberFormat(props.locales, props).format(value);
   }
 }
 
-module.exports = Intl;
+module.exports = RestIntl;
