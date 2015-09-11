@@ -1,6 +1,6 @@
-var Config = {
-  store: (opts)=> Config.opts = opts,
-  get:   (opt)=>  (Config.opts || {})[opt]
+window.Config = {
+  store: (opts)=> window.Config.opts = opts,
+  get:   (opt)=>  (window.Config.opts || {})[opt]
 }
 
-module.exports = Config;
+module.exports = window.Config;
