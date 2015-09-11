@@ -36,23 +36,19 @@ class RestIntl {
                              component={FormattedHTMLMessage}
                              {...props} />
   }
+}
 
-  number(value, props = {}) {
-    return <FormattedNumber {...props} value={value} />
-  }
+RestIntl.currency = function(value, props = {}) {
+  props.style = "currency"
+  props.currency = currency;
+  props = _.extend({
+    locales: Config.get('currencyLocale') || Config.get('locale') ||
+    navigator.language || navigator.userLanguage,
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2
+  }, props);
 
-  currency(value, currency, props = {}) {
-    props.style = "currency"
-    props.currency = currency;
-    props = _.extend({
-      locales: Config.get('currencyLocale') || Config.get('locale') ||
-                 navigator.language || navigator.userLanguage,
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 2
-    }, props);
-
-    return Intl.NumberFormat(props.locales, props).format(value);
-  }
+  return Intl.NumberFormat(props.locales, props).format(value);
 }
 
 module.exports = RestIntl;
