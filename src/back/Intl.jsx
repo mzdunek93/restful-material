@@ -38,7 +38,7 @@ class RestIntl {
   }
 }
 
-RestIntl.currency = function(value, props = {}) {
+RestIntl.currency = function(value, currency, props = {}) {
   props.style = "currency"
   props.currency = currency;
   props = _.extend({

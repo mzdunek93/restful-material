@@ -25,7 +25,12 @@ module.exports = React.createClass({
         multiSelectable: false,
         selectable: false
       },
+      bodyProps: {
+        displayRowCheckbox: false
+      },
       headerProps: {
+        adjustForCheckbox: false,
+        displaySelectAll: false,
         enableSelectAll: false
       },
       pendingMessage: "Loading...",
@@ -136,12 +141,6 @@ module.exports = React.createClass({
     return Object.keys(this.props.spec).map((title, i)=>
       <TableHeaderColumn key={i}>
         {this.translateMaybe(title)}
-      </TableHeaderColumn>)
-  },
-
-  filterColumns() {
-    return Object.keys(this.props.spec).map((title, i)=>
-      <TableHeaderColumn key={i}>
         {this.filter(title)}
       </TableHeaderColumn>)
   },
@@ -194,9 +193,8 @@ module.exports = React.createClass({
         <Table {...this.props.tableProps} >
           <TableHeader {...this.props.headerProps} >
             <TableRow>{this.headerColumns()}</TableRow>
-            <TableRow>{this.filterColumns()}</TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody {...this.props.bodyProps} >
             {this.body(this.state.resourcesFn(resources))}
           </TableBody>
         </Table>
