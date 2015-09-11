@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "underscore";
 import { IntlMixin } from "react-intl";
-import { FormattedMessage, FormattedHTMLMessage} from "react-intl";
+import { FormattedMessage, FormattedHTMLMessage, FormattedNumber } from "react-intl";
 
 var MessageComponent = React.createClass({
   mixins: [IntlMixin],
@@ -33,6 +33,14 @@ class Intl {
                              path={path}
                              component={FormattedHTMLMessage}
                              {...props} />
+  }
+
+  number(value, props = {}) {
+    return <FormattedNumber {...props} value={value} />
+  }
+
+  currency(value, props = {}) {
+    return this.number(value, _.extend(props, {style: 'currency'}));
   }
 }
 
