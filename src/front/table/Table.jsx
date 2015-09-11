@@ -37,8 +37,7 @@ module.exports = React.createClass({
       headers: {},
       pagination: true,
       perPage: 10,
-      page: 0,
-      locale: Config.get('locale') || navigator.language || navigator.userLanguage
+      page: 0
     }
   },
 
@@ -129,6 +128,13 @@ module.exports = React.createClass({
       );
   },
 
+  // Cannot use getDefaultProps for this since it is cached upon class creation.
+  // And at this point locale is not set yet.
+  currentLocale() {
+    return this.props.locale || Config.get('locale') ||
+      navigator.language || navigator.userLanguage
+  },
+
   controls(resources) {
     return <Controls onPageChange={this.pageChange}
                      onPerPageChange={this.perPageChange}
@@ -157,7 +163,7 @@ module.exports = React.createClass({
             content = r.get(field);
 
           if(isDate(content))
-            content = content.toLocaleDateString(this.props.locale);
+            content = content.toLocaleDateString(this.currentLocale());
 
           return <TableRowColumn>{content}</TableRowColumn>
         })};
