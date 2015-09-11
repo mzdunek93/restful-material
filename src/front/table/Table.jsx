@@ -25,7 +25,7 @@ module.exports = React.createClass({
         multiSelectable: false,
         selectable: false
       },
-      tableBodyProps: {
+      bodyProps: {
         displayRowCheckbox: false
       },
       headerProps: {
@@ -194,7 +194,7 @@ module.exports = React.createClass({
           <TableHeader {...this.props.headerProps} >
             <TableRow>{this.headerColumns()}</TableRow>
           </TableHeader>
-          <TableBody {...this.props.tableBodyProps} >
+          <TableBody {...this.props.bodyProps} >
             {this.body(this.state.resourcesFn(resources))}
           </TableBody>
         </Table>
