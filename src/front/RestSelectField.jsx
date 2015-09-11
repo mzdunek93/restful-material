@@ -1,11 +1,6 @@
 import React from "react";
 import { SelectField } from "material-ui";
 
-// Sadly the SelectField from material-ui does not have getValue() method.
-// This fixes this.
-// Also the "selected" value for the drop down has to be the first element
-// in the array passed to SelectField's menuItems prop.
-// This does the work of ordering the array correctly.
 module.exports = React.createClass({
   propTypes: {
     attribute: React.PropTypes.string.isRequired,
@@ -25,7 +20,9 @@ module.exports = React.createClass({
   },
 
   _onChange(_, __, item) {
-    this.props.model.set(this.props.attribute, item.payload);
+    this.setState({selectedIndex: this.selectedIndex(item.payload)}, ()=>
+      this.props.model.set(this.props.attribute, item.payload)
+    );
   },
 
   getSelectedValue() {
@@ -52,7 +49,8 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    this.setState({selectedIndex: this.selectedIndex(nextProps.model.get(nextProps.attribute))});
+    if(nextProps.model && nextProps.attribute)
+      this.setState({selectedIndex: this.selectedIndex(nextProps.model.get(nextProps.attribute))});
   },
 
   render() {
