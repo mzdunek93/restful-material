@@ -33,7 +33,9 @@ module.exports = React.createClass({
       requestChange: (value)=> {
         this.props.model.set(this.props.attribute, value);
         this.props.model.check(this.props.attribute);
-        this.setState({value: value})
+        this.setState({value: value});
+        if(this.props.onChange)
+          this.props.onChange(value)
       }
     }
   },
