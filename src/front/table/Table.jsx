@@ -154,6 +154,7 @@ module.exports = React.createClass({
 
   body(resources) {
     return resources.map((r, i)=> {
+      console.log(this.props.rowPropsFn(r))
       return <TableRow {...this.props.rowPropsFn(r)} key={i}>
         {Object.keys(this.props.spec).map((title)=> {
           var field = this.props.spec[title];
