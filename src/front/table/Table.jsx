@@ -33,6 +33,7 @@ module.exports = React.createClass({
         displaySelectAll: false,
         enableSelectAll: false
       },
+      rowPropsFn: ()=> {},
       pendingMessage: "Loading...",
       headers: {},
       pagination: true,
@@ -153,7 +154,7 @@ module.exports = React.createClass({
 
   body(resources) {
     return resources.map((r, i)=> {
-      return <TableRow key={i}>
+      return <TableRow {...this.props.rowPropsFn(r)} key={i}>
         {Object.keys(this.props.spec).map((title)=> {
           var field = this.props.spec[title];
           var content;
