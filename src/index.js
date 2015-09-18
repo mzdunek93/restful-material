@@ -17,6 +17,7 @@ import RestInput from './front/RestInput';
 import Table from './front/table/Table';
 import Info from './front/Info';
 import Confirm from './front/Confirm';
+import Theme from './front/Theme';
 
 var configure = (opts)=> Config.store(opts)
 
@@ -37,6 +38,7 @@ module.exports = {
   Table: Table,
   Info: Info,
   Confirm: Confirm,
+  Theme: Theme,
   Config: Config,
   configure: configure
 };
