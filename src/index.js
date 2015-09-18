@@ -18,6 +18,7 @@ import Table from './front/table/Table';
 import Info from './front/Info';
 import Confirm from './front/Confirm';
 import Theme from './front/Theme';
+import RestProgress from './front/RestProgress';
 
 var configure = (opts)=> Config.store(opts)
 
@@ -39,6 +40,7 @@ module.exports = {
   Info: Info,
   Confirm: Confirm,
   Theme: Theme,
+  RestProgress: RestProgress,
   Config: Config,
   configure: configure
 };
