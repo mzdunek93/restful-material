@@ -155,7 +155,7 @@ module.exports = React.createClass({
   body(resources) {
     return resources.map((r, i)=> {
       return <TableRow {...this.props.rowPropsFn(r)} key={i}>
-        {Object.keys(this.props.spec).map((title)=> {
+        {Object.keys(this.props.spec).map((title, j)=> {
           var field = this.props.spec[title];
           var content;
           if(isFunction(field))
@@ -166,7 +166,7 @@ module.exports = React.createClass({
           if(isDate(content))
             content = content.toLocaleDateString(this.currentLocale());
 
-          return <TableRowColumn>{content}</TableRowColumn>
+          return <TableRowColumn key={j} >{content}</TableRowColumn>
         })};
       </TableRow>
     });

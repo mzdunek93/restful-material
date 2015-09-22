@@ -9,7 +9,7 @@ import CountriesSelectField from "./CountriesSelectField";
 var RestInput = React.createClass({
   propTypes: {
     model: React.PropTypes.object.isRequired,
-    label: React.PropTypes.string.isRequired,
+    label: React.PropTypes.any,
     type: React.PropTypes.string.isRequired,
     attribute: React.PropTypes.string.isRequired
   },

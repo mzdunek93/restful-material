@@ -66,10 +66,9 @@ module.exports = React.createClass({
         active = styles.active;
 
       return (
-        <span style={styles.span}>
-          <a  onClick={function(e){this.pageChange(e, i)}.bind(this)}
-              key={"a" + i}
-              style={this.mergeAndPrefix(styles.a, active)} >
+        <span style={styles.span} key={i} >
+          <a onClick={function(e){this.pageChange(e, i)}.bind(this)}
+             style={this.mergeAndPrefix(styles.a, active)} >
             {i + 1}
           </a>
         </span>
@@ -83,10 +82,9 @@ module.exports = React.createClass({
         active = styles.active;
 
       return (
-        <span style={styles.span}>
-          <a  style={this.mergeAndPrefix(styles.a, active)}
-              onClick={function(e){this.perPageChange(e, i)}.bind(this)}
-              key={i}>
+        <span key={i} style={styles.span}>
+          <a style={this.mergeAndPrefix(styles.a, active)}
+             onClick={function(e){this.perPageChange(e, i)}.bind(this)} >
             {i}
           </a>
         </span>
@@ -95,10 +93,10 @@ module.exports = React.createClass({
 
     return (
       <Toolbar style={styles.toolbar}>
-        <ToolbarGroup key={0} float="left" >
+        <ToolbarGroup float="left" >
           {pageLinks}
         </ToolbarGroup>
-        <ToolbarGroup key={1} float="right" >
+        <ToolbarGroup float="right" >
           <ToolbarTitle text="items per page" style={styles.toolbarTitle} />
           {perPage}
         </ToolbarGroup>
