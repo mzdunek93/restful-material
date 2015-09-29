@@ -14,11 +14,11 @@ module.exports = React.createClass({
   },
 
   getSelectedValue() {
-    return this.getValue;
+    return this.getValue();
   },
 
   getDate() {
-    return this.getValue;
+    return this.getValue();
   },
 
   onChange(_, date) {
