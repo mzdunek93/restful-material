@@ -6,7 +6,7 @@ module.exports = React.createClass({
     if(!(date instanceof Date))
       date = new Date(date);
 
-    return date.toLocaleDateString('fr-FR');
+    return date.toLocaleDateString(Config.get('locale') || 'fr-FR');
   },
 
   getValue() {
