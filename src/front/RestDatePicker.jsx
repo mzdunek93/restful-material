@@ -27,15 +27,20 @@ module.exports = React.createClass({
 
   render() {
     var m = this.props.model;
+    var props = {
+      ref: 'picker',
+      hintText: this.props.label,
+      showYearSelector: this.props.showYearSelector,
+      onChange: this.onChange,
+      errorText: m.errors[this.props.attribute],
+      formatDate: this.dateFormat,
+    }
+    var value = m.get(this.props.attribute);
+    if(value)
+      props.defaultDate = value;
 
     return (
-      <DatePicker ref="picker"
-                  hintText={this.props.label}
-                  showYearSelector={this.props.showYearSelector}
-                  onChange={this.onChange}
-                  errorText={m.errors[this.props.attribute]}
-                  formatDate={this.dateFormat}
-                  defaultDate={m.get(this.props.attribute)} />
+      <DatePicker {...props} />
     );
   }
 });
