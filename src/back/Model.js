@@ -72,15 +72,7 @@ class Model {
     if(!keys)
       keys = Object.keys(this.map)
 
-    var out = {};
-
-    keys.forEach((key)=> {
-      let val = this.get(key);
-
-      out[key] = _.isDate(val) ? val.toLocaleDateString() : val;
-    });
-
-    return out;
+    return _.pick(this.map, keys);
   }
 
   validation() {
