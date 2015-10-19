@@ -19,19 +19,28 @@ var MessageComponent = React.createClass({
 });
 
 class RestIntl {
-  constructor(messages) {
+  constructor(messages, locale = 'en-GB') {
     this.messages = messages;
+    this.setLocale(locale);
+  }
+
+  setLocale(locale) {
+    return this.locale = locale;
+  }
+
+  getMessages() {
+    return this.messages[this.locale];
   }
 
   msg(path, props = {}) {
-    return <MessageComponent messages={this.messages}
+    return <MessageComponent messages={this.getMessages()}
                              path={path}
                              component={FormattedMessage}
                              {...props} />
   }
 
   htmlMsg(path, props = {}) {
-    return <MessageComponent messages={this.messages}
+    return <MessageComponent messages={this.getMessages()}
                              path={path}
                              component={FormattedHTMLMessage}
                              {...props} />

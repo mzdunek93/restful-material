@@ -12,8 +12,8 @@ const Intl = require("../../src/back/Intl");
 describe('Intl', () => {
   describe('constructor', () => {
     it('sets up the messages', () => {
-      var intl = new Intl({foo: 'bar'});
-      expect(intl.messages).toEqual({foo: 'bar'});
+      var intl = new Intl({'en-GB': {foo: 'bar'}}, 'en-GB');
+      expect(intl.getMessages()).toEqual({foo: 'bar'});
     })
   })
 })
