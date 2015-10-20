@@ -72,6 +72,10 @@ module.exports = React.createClass({
       return title;
   },
 
+  displayDate(date) {
+    return date.toLocaleDateString(this.currentLocale());
+  },
+
   filteredResources(title, filterValue, resources = this.state.filtered) {
     filterValue = filterValue.toString().toLowerCase();
 
@@ -82,7 +86,9 @@ module.exports = React.createClass({
 
     for(var i = 0; i < resources.length; i++){
       var val = resources[i].get(this.props.spec[title]);
-      // TODO: maybe for performance is better to use Regexp instead?
+      if(isDate(val))
+        val = this.displayDate(val);
+
       if((val && val.toString().toLowerCase().indexOf(filterValue) !== -1) ||
         filterValue === '')
         out.push(resources[i]);
@@ -164,7 +170,7 @@ module.exports = React.createClass({
             content = r.get(field);
 
           if(isDate(content))
-            content = content.toLocaleDateString(this.currentLocale());
+            content = this.displayDate(content);
 
           return <TableRowColumn key={j} >{content}</TableRowColumn>
         })};
