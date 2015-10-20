@@ -9,7 +9,7 @@ import { Table,
          TableRowColumn } from "material-ui";
 import Controls from "./Controls";
 import Config from "../../back/Config";
-import { without, uniq, isDate, extend, isFunction } from "underscore";
+import { without, uniq, isDate, extend, isFunction, isObject } from "underscore";
 
 module.exports = React.createClass({
   mixins: [IntlMixin],
@@ -48,8 +48,18 @@ module.exports = React.createClass({
       page: this.props.page,
       activeFilters: [],
       resourcesFn: this.props.pagination ? this.subset : this.all,
-      controlsFn: this.props.pagination ? this.controls : ()=> <span />
-    };
+      controlsFn: this.props.pagination ? this.controls : ()=> <span />,
+    }
+  },
+
+  columnSpec(title) {
+    let columnSpec = this.props.spec[title];
+    if(isFunction(columnSpec))
+      return {key: columnSpec};
+    if(isObject(columnSpec))
+      return extend({filter: 'substring'}, columnSpec);
+    else
+      return {key: columnSpec, filter: 'substring'};
   },
 
   pageChange(page) {
@@ -76,8 +86,10 @@ module.exports = React.createClass({
     return date.toLocaleDateString(this.currentLocale());
   },
 
-  filteredResources(title, filterValue, resources = this.state.filtered) {
+  filteredResources(title, filterValue, resources) {
     filterValue = filterValue.toString().toLowerCase();
+    if(filterValue === '')
+      return resources;
 
     var out = [];
 
@@ -85,13 +97,23 @@ module.exports = React.createClass({
       resources = this.props.resources;
 
     for(var i = 0; i < resources.length; i++){
-      var val = resources[i].get(this.props.spec[title]);
+      var spec = this.columnSpec(title);
+
+      var val = resources[i].get(spec.key);
+      if(!val)
+        continue;
       if(isDate(val))
         val = this.displayDate(val);
+      val = val.toString().toLowerCase();
 
-      if((val && val.toString().toLowerCase().indexOf(filterValue) !== -1) ||
-        filterValue === '')
-        out.push(resources[i]);
+      switch(spec.filter) {
+        case 'substring':
+          if(val.indexOf(filterValue) !== -1) out.push(resources[i]);
+          break;
+        case 'startingWith':
+          if(val.indexOf(filterValue) === 0)  out.push(resources[i]);
+          break;
+      }
     }
 
     return out;
@@ -116,7 +138,7 @@ module.exports = React.createClass({
       this.removeFilter(title);
     else
       this.setState({
-        filtered: this.filteredResources(title, filterValue),
+        filtered: this.filteredResources(title, filterValue, this.state.filtered),
         activeFilters: uniq(this.state.activeFilters.concat([title]))
       });
   },
@@ -124,7 +146,7 @@ module.exports = React.createClass({
   filter(title) {
     if(this.props.headers[title])
       return this.props.headers[title]();
-    else if(isFunction(this.props.spec[title]))
+    else if(isFunction(this.columnSpec(title).key))
       return '';
     else
       return (
@@ -162,7 +184,7 @@ module.exports = React.createClass({
     return resources.map((r, i)=> {
       return <TableRow {...this.props.rowPropsFn(r)} key={i}>
         {Object.keys(this.props.spec).map((title, j)=> {
-          var field = this.props.spec[title];
+          var field = this.columnSpec(title).key;
           var content;
           if(isFunction(field))
             content = field(r, i);
