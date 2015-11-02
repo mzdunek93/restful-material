@@ -5,13 +5,15 @@ module.exports = React.createClass({
   propTypes: {
     attribute: React.PropTypes.string,
     model: React.PropTypes.object,
-    id: React.PropTypes.string
+    id: React.PropTypes.string,
+    transformer: React.PropTypes.func
   },
 
   getDefaultProps() {
     return {
       id: "id-" + Math.random(),
-      type: 'text'
+      type: 'text',
+      transformer: v => v
     }
   },
 
@@ -31,6 +33,8 @@ module.exports = React.createClass({
     return {
       value: this.state.value,
       requestChange: (value)=> {
+        value = this.props.transformer(value);
+
         this.props.model.set(this.props.attribute, value);
         this.props.model.check(this.props.attribute);
         this.setState({value: value});
