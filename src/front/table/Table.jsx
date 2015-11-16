@@ -56,7 +56,7 @@ module.exports = React.createClass({
     let columnSpec = this.props.spec[title];
     if(isFunction(columnSpec))
       return {key: columnSpec};
-    if(isObject(columnSpec))
+    if(isObject(columnSpec) && columnSpec.key != null)
       return extend({filter: 'substring'}, columnSpec);
     else
       return {key: columnSpec, filter: 'substring'};
