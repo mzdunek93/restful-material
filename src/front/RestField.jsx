@@ -18,7 +18,9 @@ module.exports = React.createClass({
   },
 
   getInitialState() {
-    return {value: this.props.model.get(this.props.attribute)};
+    return {
+      value: this.props.transformer(this.props.model.get(this.props.attribute))
+    };
   },
 
   getValue() {
