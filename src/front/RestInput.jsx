@@ -10,7 +10,7 @@ var RestInput = React.createClass({
   propTypes: {
     model: React.PropTypes.object.isRequired,
     label: React.PropTypes.any,
-    type: React.PropTypes.string.isRequired,
+    kind: React.PropTypes.string.isRequired,
     attribute: React.PropTypes.string.isRequired
   },
 
@@ -70,7 +70,7 @@ var RestInput = React.createClass({
   },
 
   render(){
-    return this.inputs()[this.props.type]();
+    return this.inputs()[this.props.kind]();
   }
 });
 
