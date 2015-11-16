@@ -25,6 +25,7 @@ var RestInput = React.createClass({
   inputs() {
     return {
       string: this.restField,
+      number: this.restNumberField,
       dropDown: this.restSelectField,
       radio: this.radioButtonGroup,
       country: this.country,
@@ -36,6 +37,12 @@ var RestInput = React.createClass({
   restField() {
     return (
       <RestField {...this.props} />
+    )
+  },
+
+  restNumberField() {
+    return (
+      <RestField {...this.props} type="number" />
     )
   },
 
