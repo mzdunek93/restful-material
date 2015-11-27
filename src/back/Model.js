@@ -86,7 +86,7 @@ class Model {
     if(!validation)
       return;
 
-    if(!validation.check(this.get(name)))
+    if(!validation.check( (this.get(name) || '').toString() ))
       this.errors[name] = validation.message;
   }
 
