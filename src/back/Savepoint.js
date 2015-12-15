@@ -23,6 +23,7 @@ var Mixin = function(id){
     deleteSavepointMaybe(xhr) {
       if(xhr && xhr.status !== 401)
         this.deleteSavepoint();
+      return xhr;
     },
 
     deleteSavepoint() {
