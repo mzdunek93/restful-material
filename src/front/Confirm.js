@@ -4,7 +4,7 @@ import { Dialog } from "material-ui";
 var Component = React.createClass({
   getInitialState() {
     return {
-      message: '',
+      messages: [''],
       title: '',
       buttons: {
         cancel: '', confirm: ''
@@ -13,9 +13,11 @@ var Component = React.createClass({
     }
   },
 
-  show(message, args) {
+  show(messages, args) {
+    if(!Array.isArray(messages)) messages = [messages];
+
     this.setState({
-      message: message,
+      messages: messages,
       title: args.title,
       buttons: args.buttons,
       onConfirm: args.onConfirm
@@ -33,7 +35,7 @@ var Component = React.createClass({
       <Dialog ref="confirm"
               title={this.state.title}
               actions={actions} >
-        {this.state.message}
+        {this.state.messages.map((m, i) => <div key={i}>{m}</div>)}
       </Dialog>
     )
   }
