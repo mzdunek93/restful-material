@@ -30,6 +30,7 @@ module.exports = React.createClass({
     var props = {
       ref: 'picker',
       hintText: this.props.label,
+      floatingLabelText: this.props.label,
       showYearSelector: this.props.showYearSelector,
       onChange: this.onChange,
       errorText: m.errors[this.props.attribute],
