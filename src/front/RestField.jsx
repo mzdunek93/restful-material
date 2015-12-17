@@ -31,6 +31,10 @@ module.exports = React.createClass({
     this.setState({value: nextProps.model.get(nextProps.attribute)})
   },
 
+  focus() {
+    this.refs.field.focus();
+  },
+
   valueLink() {
     return {
       value: this.state.value,
