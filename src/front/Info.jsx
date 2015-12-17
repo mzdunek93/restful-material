@@ -30,6 +30,7 @@ var Component = React.createClass({
       <Snackbar message={this.state.message}
                 action={this.state.action}
                 onActionTouchTap={this.onActionTouchTap}
+                style={{zIndex: '100'}}
                 ref="snack"
                 openOnMount={false} />
     )
