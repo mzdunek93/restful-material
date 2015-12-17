@@ -36,9 +36,10 @@ module.exports = React.createClass({
       value: this.state.value,
       requestChange: (value)=> {
         value = this.props.transformer(value);
-        let start, end;
-        if(this.props.kind != 'number'){
-          let input = this.refs.field._getInputNode();//it looks like a private method...
+        let start, end, input;
+        if(this.props.kind != 'number' &&
+           this.state.value && this.state.value.length >= value.length){
+          input = this.refs.field._getInputNode();//it looks like a private method...
           start = input.selectionStart;
           end   = input.selectionEnd;
         }
@@ -46,7 +47,7 @@ module.exports = React.createClass({
         this.props.model.set(this.props.attribute, value);
         this.props.model.check(this.props.attribute);
         this.setState({value: value}, () => {
-          if(start && end){
+          if(input && start && end){
             input.selectionStart = start;
             input.selectionEnd   = end;
           }
