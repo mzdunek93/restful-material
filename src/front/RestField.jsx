@@ -41,7 +41,7 @@ module.exports = React.createClass({
       requestChange: (value)=> {
         value = this.props.transformer(value);
         let start, end, input;
-        if(this.props.kind != 'number' &&
+        if((this.props.type == 'text' || this.props.type == 'string') &&
            this.state.value && this.state.value.length >= value.length){
           input = this.refs.field._getInputNode();//it looks like a private method...
           start = input.selectionStart;
