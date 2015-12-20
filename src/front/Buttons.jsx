@@ -1,6 +1,5 @@
 import React from "react";
 import { IconButton, SvgIcon, FloatingActionButton } from "material-ui";
-import Router from "react-router";
 import HelpOutlineIcon from "material-ui/lib/svg-icons/action/help-outline";
 import FileDownloadIcon from "material-ui/lib/svg-icons/file/file-download";
 import AddIcon from "material-ui/lib/svg-icons/content/add";
@@ -24,8 +23,6 @@ var Delete = React.createClass({
 });
 
 var Download = React.createClass({
-  mixins: [Router.Navigation],
-
   click(){
     window.open(this.props.url, "_blank");
   },
