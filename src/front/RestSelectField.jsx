@@ -61,7 +61,6 @@ module.exports = React.createClass({
                      floatingLabelText={this.props.label}
                      errorText={this.props.model.errors[this.props.attribute]}
                      onChange={this._onChange}
-                     value={this.props.items[this.state.selectedIndex].payload}
                      selectedIndex={this.state.selectedIndex}
                      menuItems={this.items()}
                      className={this.props.className} />

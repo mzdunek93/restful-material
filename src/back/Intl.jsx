@@ -2,7 +2,6 @@ import React from "react";
 import _ from "underscore";
 import { IntlMixin } from "react-intl";
 import { FormattedMessage, FormattedHTMLMessage, FormattedNumber } from "react-intl";
-import Intl from "intl";
 import Config from "./Config";
 
 var MessageComponent = React.createClass({
