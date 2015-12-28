@@ -14,7 +14,6 @@ module.exports = React.createClass({
 
   getDefaultProps() {
     return {
-      id: "id-" + Math.random(),
       type: 'text',
       transformer: v => v
     }
