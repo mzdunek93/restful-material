@@ -11,6 +11,11 @@ import Controls from "./Controls";
 import Config from "../../back/Config";
 import { without, uniq, isDate, extend, isFunction, isObject } from "underscore";
 
+const sortingIndicatorMap = {
+  true: "▾",
+  false: "▴"
+}
+
 module.exports = React.createClass({
   mixins: [IntlMixin],
 
@@ -49,11 +54,12 @@ module.exports = React.createClass({
       activeFilters: [],
       resourcesFn: this.props.pagination ? this.subset : this.all,
       controlsFn: this.props.pagination ? this.controls : ()=> <span />,
+      sorting: {}
     }
   },
 
   getResource(rowIndex) {
-    return (this.state.filtered || this.props.resources)[rowIndex];
+    return this.resources()[rowIndex];
   },
 
   columnSpec(title) {
@@ -75,7 +81,7 @@ module.exports = React.createClass({
 
   perPageChange(perPage) {
     window.localStorage.setItem('perPage', perPage);
-    var length = (this.state.filtered || this.props.resources).length;
+    var length = this.resources().length;
     if((perPage * this.state.page) > length)
       this.setState({perPage: perPage, page: parseInt(length / perPage)});
     else
@@ -179,12 +185,37 @@ module.exports = React.createClass({
                      perPage={this.state.perPage} />;
   },
 
+  setSorting(title) {
+    let asc;
+    if(this.state.sorting.title == title)
+      asc = !this.state.sorting.asc;
+    else
+      asc = true;
+
+    this.setState({
+      sorting: {
+        title: title,
+        asc: asc
+      }
+    });
+  },
+
   headerColumns() {
-    return Object.keys(this.props.spec).map((title, i)=>
-      <TableHeaderColumn key={i}>
-        {this.translateMaybe(title)}
-        {this.filter(title)}
-      </TableHeaderColumn>)
+    return Object.keys(this.props.spec).map((title, i) => {
+      let indicator;
+      if(this.state.sorting.title == title)
+        indicator = this.state.sorting.asc;
+
+      return (
+        <TableHeaderColumn key={i}>
+          <span onClick={this.setSorting.bind(this, title)}>
+            {this.translateMaybe(title)}
+            &nbsp;
+            {sortingIndicatorMap[indicator]}
+          </span>
+          {this.filter(title)}
+        </TableHeaderColumn>
+      )});
   },
 
   body(resources) {
@@ -208,6 +239,26 @@ module.exports = React.createClass({
     });
   },
 
+  sortAsc(key, a, b) {
+    return a.get(key).localeCompare(b.get(key));
+  },
+
+  sortDesc(key, a, b){
+    return b.get(key).localeCompare(a.get(key));
+  },
+
+  sort(resources) {
+    let sorting = this.state.sorting
+    if(!sorting.title)
+      return resources;
+
+    let spec = this.columnSpec(this.state.sorting.title);
+
+    return resources.sort(this.state.sorting.asc ?
+                          this.sortAsc.bind(this, spec.key) :
+                          this.sortDesc.bind(this, spec.key));
+  },
+
   subset(resources) {
     var subset = [];
     var start = this.state.page * this.state.perPage;
@@ -225,8 +276,12 @@ module.exports = React.createClass({
     return resources;
   },
 
+  resources() {
+    return this.state.filtered || this.props.resources;;
+  },
+
   render() {
-    var resources = this.state.filtered || this.props.resources;
+    var resources = this.sort(this.resources());
 
     if(!resources)
       return <div />
