@@ -52,14 +52,21 @@ module.exports = React.createClass({
     }
   },
 
+  getResource(rowIndex) {
+    return (this.state.filtered || this.props.resources)[rowIndex];
+  },
+
   columnSpec(title) {
     let columnSpec = this.props.spec[title];
+    let spec;
     if(isFunction(columnSpec))
-      return {key: columnSpec};
+      spec = {key: columnSpec};
     if(isObject(columnSpec) && columnSpec.key != null)
-      return extend({filter: 'substring'}, columnSpec);
+      spec = {filter: 'substring'};
     else
-      return {key: columnSpec, filter: 'substring'};
+      spec = {key: columnSpec, filter: 'substring'};
+
+    return Object.assign({props: {}}, columnSpec, spec);
   },
 
   pageChange(page) {
@@ -184,7 +191,8 @@ module.exports = React.createClass({
     return resources.map((r, i)=> {
       return <TableRow {...this.props.rowPropsFn(r)} key={i}>
         {Object.keys(this.props.spec).map((title, j)=> {
-          var field = this.columnSpec(title).key;
+          var spec = this.columnSpec(title);
+          var field = spec.key;
           var content;
           if(isFunction(field))
             content = field(r, i);
@@ -194,7 +202,7 @@ module.exports = React.createClass({
           if(isDate(content))
             content = this.displayDate(content);
 
-          return <TableRowColumn key={j} >{content}</TableRowColumn>
+          return <TableRowColumn {...spec.props} key={j} >{content}</TableRowColumn>
         })};
       </TableRow>
     });
