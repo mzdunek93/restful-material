@@ -15,7 +15,8 @@ module.exports = React.createClass({
   getDefaultProps() {
     return {
       type: 'text',
-      transformer: v => v
+      transformer: v => v,
+      onChannge: v => v
     }
   },
 
@@ -58,8 +59,7 @@ module.exports = React.createClass({
             input.selectionEnd   = end;
           }
         });
-        if(this.props.onChange)
-          this.props.onChange(value)
+        this.props.onChange(value)
       }
     }
   },
