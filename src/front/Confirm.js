@@ -1,5 +1,5 @@
 import React from "react";
-import { Dialog } from "material-ui";
+import { Dialog, FlatButton } from "material-ui";
 
 var Component = React.createClass({
   getInitialState() {
@@ -9,6 +9,7 @@ var Component = React.createClass({
       buttons: {
         cancel: '', confirm: ''
       },
+      open: false,
       onConfirm: ()=> {}
     }
   },
@@ -20,19 +21,26 @@ var Component = React.createClass({
       messages: messages,
       title: args.title,
       buttons: args.buttons,
-      onConfirm: args.onConfirm
-    }, ()=> this.refs.confirm.show());
+      onConfirm: args.onConfirm,
+      open: true
+    });
   },
 
   render(){
-    let actions = [{text: this.state.buttons.cancel},
-                   {text: this.state.buttons.confirm, onTouchTap: ()=> {
-                     this.state.onConfirm();
-                     this.refs.confirm.dismiss();
-                   }}]
+    let actions = [
+      <FlatButton label={this.state.buttons.confirm}
+                  primary={true}
+                  onTouchTap={() => {
+                    this.state.onConfirm();
+                    this.setState({open: false})}} />,
+
+      <FlatButton label={this.state.buttons.cancel}
+                  secondary={true}
+                  onTouchTap={() => this.setState({open: false})} />
+    ];
 
     return (
-      <Dialog ref="confirm"
+      <Dialog open={this.state.open}
               title={this.state.title}
               actions={actions} >
         {this.state.messages.map((m, i) => <div key={i}>{m}</div>)}
