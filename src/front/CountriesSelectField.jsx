@@ -1,5 +1,5 @@
 import React from "react";
-import RestSelectField from "./RestSelectField";
+import { AutoComplete } from "material-ui";
 
 var CountriesSelectField = React.createClass({
   propTypes: {
@@ -18,17 +18,25 @@ var CountriesSelectField = React.createClass({
 
   items() {
     return CountriesSelectField.countries.map((c)=> {
-      return {text: c.text, payload: c[this.props.codeStandard]}
+      return c.text;
     });
+  },
+
+  _setAttribute(v) {
+    let country = CountriesSelectField.countries.find(c => {
+      return c.text == v;
+    });
+    this.props.model.set(this.props.attribute,
+                         country ? country[this.props.codeStandard] : v);
   },
 
   render() {
     return (
-      <RestSelectField {...this.props}
-                       items={this.items()}
-                       sort={this.props.sort}
-                       ref="menu"
-                       className="country-select" />
+      <AutoComplete {...this.props}
+                    dataSource={this.items()}
+                    onNewRequest={this._setAttribute}
+                    ref="menu"
+                    className="country-select" />
     )
   },
 
