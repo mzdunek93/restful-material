@@ -1,9 +1,13 @@
 import React from "react";
-import { AutoComplete } from "material-ui";
+import { AutoComplete, TextField } from "material-ui";
 
 var CountriesSelectField = React.createClass({
   propTypes: {
     model: React.PropTypes.object
+  },
+
+  contextTypes: {
+    readOnly: React.PropTypes.bool
   },
 
   getValue() {
@@ -31,13 +35,24 @@ var CountriesSelectField = React.createClass({
   },
 
   render() {
-    return (
-      <AutoComplete {...this.props}
+    let value = this.props.model.get(this.props.attribute);
+    value = CountriesSelectField.countries.find(c =>
+      c[this.props.codeStandard] == value
+    );
+    if(!value)
+      value = {text: ''};
+
+    if(this.context.readOnly)
+      return <TextField defaultValue={value.text} readOnly={true} />;
+    else
+      return (
+        <AutoComplete {...this.props}
                     dataSource={this.items()}
+                    searchText={value.text}
                     onNewRequest={this._setAttribute}
                     ref="menu"
                     className="country-select" />
-    )
+    );
   },
 
   statics: {
