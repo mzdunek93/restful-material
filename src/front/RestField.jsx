@@ -16,7 +16,7 @@ module.exports = React.createClass({
     return {
       type: 'text',
       transformer: v => v,
-      onChannge: v => v
+      onChange: v => v
     }
   },
 
