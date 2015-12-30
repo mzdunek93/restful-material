@@ -239,12 +239,25 @@ module.exports = React.createClass({
     });
   },
 
+  sanitizeForSorting(key, a, b) {
+    a = a.get(key);
+    b = b.get(key);
+    if(a === undefined || a === null) a = '';
+    if(b === undefined || b === null) b = '';
+
+    return [a, b];
+  },
+
   sortAsc(key, a, b) {
-    return a.get(key).localeCompare(b.get(key));
+    [a, b] = this.sanitizeForSorting(key, a, b);
+
+    return a.toString().localeCompare(b.toString());
   },
 
   sortDesc(key, a, b){
-    return b.get(key).localeCompare(a.get(key));
+    [a, b] = this.sanitizeForSorting(key, a, b);
+
+    return b.toString().localeCompare(a.toString());
   },
 
   sort(resources) {
