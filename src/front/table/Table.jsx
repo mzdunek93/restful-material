@@ -212,7 +212,7 @@ module.exports = React.createClass({
         indicator = this.state.sorting.asc;
 
       return (
-        <TableHeaderColumn key={i}>
+        <TableHeaderColumn key={i} style={{cursor: 'pointer'}}>
           <span onClick={this.setSorting.bind(this, title)}>
             {this.translateMaybe(title)}
             &nbsp;
