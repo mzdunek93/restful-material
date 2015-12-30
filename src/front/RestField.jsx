@@ -5,8 +5,11 @@ module.exports = React.createClass({
   propTypes: {
     attribute: React.PropTypes.string,
     model: React.PropTypes.object,
-    id: React.PropTypes.string,
     transformer: React.PropTypes.func
+  },
+
+  contextTypes: {
+    readOnly: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -65,6 +68,7 @@ module.exports = React.createClass({
   render(){
     return <TextField {...this.props}
                       ref='field'
+                      readOnly={this.context.readOnly}
                       errorText={this.props.model.errors[this.props.attribute]}
                       valueLink={this.valueLink()}
                       floatingLabelText={this.props.label} />
