@@ -47,7 +47,7 @@ module.exports = React.createClass({
       props.defaultDate = value;
 
     if(this.context.readOnly)
-      return <TextField defaultValue={this.dateFormat(props.defaultDate)}
+      return <TextField value={this.dateFormat(props.defaultDate)}
                         readOnly={true} />
     else
       return <DatePicker {...props} />

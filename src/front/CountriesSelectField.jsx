@@ -43,7 +43,7 @@ var CountriesSelectField = React.createClass({
       value = {text: ''};
 
     if(this.context.readOnly)
-      return <TextField defaultValue={value.text} readOnly={true} />;
+      return <TextField value={value.text} readOnly={true} />;
     else
       return (
         <AutoComplete {...this.props}
