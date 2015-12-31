@@ -48,6 +48,7 @@ module.exports = React.createClass({
 
     if(this.context.readOnly)
       return <TextField value={this.dateFormat(props.defaultDate)}
+                        floatingLabelText={this.props.label}
                         readOnly={true} />
     else
       return <DatePicker {...props} />

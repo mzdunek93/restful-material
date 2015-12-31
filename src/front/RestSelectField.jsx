@@ -59,6 +59,7 @@ module.exports = React.createClass({
 
     if(this.context.readOnly)
       return <TextField value={(items.find(i => i.payload == this.state.value) || {}).text}
+                        floatingLabelText={this.props.label}
                         readOnly={true} />
     else
       return (
