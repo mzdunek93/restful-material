@@ -212,8 +212,9 @@ module.exports = React.createClass({
         indicator = this.state.sorting.asc;
 
       return (
-        <TableHeaderColumn key={i} style={{cursor: 'pointer'}}>
-          <span onClick={this.setSorting.bind(this, title)}>
+        <TableHeaderColumn key={i}>
+          <span onClick={this.setSorting.bind(this, title)}
+                style={{cursor: 'pointer'}} >
             {this.translateMaybe(title)}
             &nbsp;
             {sortingIndicatorMap[indicator]}
