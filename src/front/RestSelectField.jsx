@@ -1,5 +1,5 @@
 import React from "react";
-import { SelectField } from "material-ui";
+import { SelectField, TextField } from "material-ui";
 
 module.exports = React.createClass({
   propTypes: {
@@ -7,6 +7,10 @@ module.exports = React.createClass({
     items: React.PropTypes.array.isRequired,
     model: React.PropTypes.object.isRequired,
     sort: React.PropTypes.func
+  },
+
+  contextTypes: {
+    readOnly: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -51,16 +55,22 @@ module.exports = React.createClass({
   },
 
   render() {
-    return (
-      <span>
-        <SelectField {...this.props}
-                     floatingLabelText={this.props.label}
-                     errorText={this.props.model.errors[this.props.attribute]}
-                     value={this.state.value}
-                     onChange={this._onChange}
-                     menuItems={this.items()}
-                     className={this.props.className} />
-      </span>
+    let items = this.items();
+
+    if(this.context.readOnly)
+      return <TextField value={(items.find(i => i.payload == this.state.value) || {}).text}
+                        readOnly={true} />
+    else
+      return (
+        <span>
+          <SelectField {...this.props}
+                       floatingLabelText={this.props.label}
+                       errorText={this.props.model.errors[this.props.attribute]}
+                       value={this.state.value}
+                       onChange={this._onChange}
+                       menuItems={items}
+                       className={this.props.className} />
+        </span>
     )
   }
 });
