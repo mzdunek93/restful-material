@@ -3,15 +3,16 @@ import { Snackbar } from "material-ui";
 
 var Component = React.createClass({
   getInitialState() {
-    return {message: '', action: null};
+    return {message: '', action: null, open: false};
   },
 
   show(message, action = null, onAction = null) {
     this.setState({
       message: message,
       action: action,
+      open: true,
       onActionTouchTap: onAction
-    }, ()=> this.refs.snack.show());
+    });
   },
 
   onActionTouchTap() {
@@ -21,8 +22,7 @@ var Component = React.createClass({
   },
 
   ok() {
-    this.setState({message: ''});
-    this.refs.snack.dismiss();
+    this.setState({message: '', open: false});
   },
 
   render(){
@@ -32,7 +32,7 @@ var Component = React.createClass({
                 onActionTouchTap={this.onActionTouchTap}
                 style={{zIndex: '100'}}
                 ref="snack"
-                openOnMount={false} />
+                open={this.state.open} />
     )
   }
 });

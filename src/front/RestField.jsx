@@ -14,9 +14,9 @@ module.exports = React.createClass({
 
   getDefaultProps() {
     return {
-      id: "id-" + Math.random(),
       type: 'text',
-      transformer: v => v
+      transformer: v => v,
+      onChange: v => v
     }
   },
 
@@ -59,8 +59,7 @@ module.exports = React.createClass({
             input.selectionEnd   = end;
           }
         });
-        if(this.props.onChange)
-          this.props.onChange(value)
+        this.props.onChange(value)
       }
     }
   },

@@ -1,8 +1,14 @@
 import React from "react";
-import { DatePicker } from "material-ui";
+import { DatePicker, TextField } from "material-ui";
 
 module.exports = React.createClass({
+  contextTypes: {
+    readOnly: React.PropTypes.bool
+  },
+
   dateFormat(date) {
+    if(!date)
+      return date;
     if(!(date instanceof Date))
       date = new Date(date);
 
@@ -40,8 +46,11 @@ module.exports = React.createClass({
     if(value)
       props.defaultDate = value;
 
-    return (
-      <DatePicker {...props} />
-    );
+    if(this.context.readOnly)
+      return <TextField value={this.dateFormat(props.defaultDate)}
+                        floatingLabelText={this.props.label}
+                        readOnly={true} />
+    else
+      return <DatePicker {...props} />
   }
 });

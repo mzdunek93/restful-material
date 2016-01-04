@@ -1,9 +1,13 @@
 import React from "react";
-import RestSelectField from "./RestSelectField";
+import { AutoComplete, TextField } from "material-ui";
 
 var CountriesSelectField = React.createClass({
   propTypes: {
     model: React.PropTypes.object
+  },
+
+  contextTypes: {
+    readOnly: React.PropTypes.bool
   },
 
   getValue() {
@@ -18,18 +22,37 @@ var CountriesSelectField = React.createClass({
 
   items() {
     return CountriesSelectField.countries.map((c)=> {
-      return {text: c.text, payload: c[this.props.codeStandard]}
+      return c.text;
     });
   },
 
+  _setAttribute(v) {
+    let country = CountriesSelectField.countries.find(c => {
+      return c.text == v;
+    });
+    this.props.model.set(this.props.attribute,
+                         country ? country[this.props.codeStandard] : v);
+  },
+
   render() {
-    return (
-      <RestSelectField {...this.props}
-                       items={this.items()}
-                       sort={this.props.sort}
-                       ref="menu"
-                       className="country-select" />
-    )
+    let value = this.props.model.get(this.props.attribute);
+    value = CountriesSelectField.countries.find(c =>
+      c[this.props.codeStandard] == value
+    );
+    if(!value)
+      value = {text: ''};
+
+    if(this.context.readOnly)
+      return <TextField value={value.text} readOnly={true} />;
+    else
+      return (
+        <AutoComplete {...this.props}
+                    dataSource={this.items()}
+                    searchText={value.text}
+                    onNewRequest={this._setAttribute}
+                    ref="menu"
+                    className="country-select" />
+    );
   },
 
   statics: {

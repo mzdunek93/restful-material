@@ -12,8 +12,8 @@ import Config from "../../back/Config";
 import { without, uniq, isDate, extend, isFunction, isObject } from "underscore";
 
 const sortingIndicatorMap = {
-  true: "▾",
-  false: "▴"
+  true: "▴",
+  false: "▾"
 }
 
 module.exports = React.createClass({
@@ -48,13 +48,18 @@ module.exports = React.createClass({
   },
 
   getInitialState() {
+    let firstTitle = Object.keys(this.props.spec)[0];
+
     return {
       perPage: parseInt(window.localStorage.getItem('perPage') || this.props.perPage),
       page: this.props.page,
       activeFilters: [],
       resourcesFn: this.props.pagination ? this.subset : this.all,
       controlsFn: this.props.pagination ? this.controls : ()=> <span />,
-      sorting: {}
+      sorting: {
+        title: firstTitle,
+        asc: false
+      }
     }
   },
 
@@ -208,7 +213,8 @@ module.exports = React.createClass({
 
       return (
         <TableHeaderColumn key={i}>
-          <span onClick={this.setSorting.bind(this, title)}>
+          <span onClick={this.setSorting.bind(this, title)}
+                style={{cursor: 'pointer'}} >
             {this.translateMaybe(title)}
             &nbsp;
             {sortingIndicatorMap[indicator]}
