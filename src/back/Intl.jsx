@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "underscore";
 import { IntlMixin } from "react-intl";
 import { FormattedMessage, FormattedHTMLMessage, FormattedNumber } from "react-intl";
 import Config from "./Config";
@@ -8,8 +7,14 @@ var MessageComponent = React.createClass({
   mixins: [IntlMixin],
 
   getProps() {
-    return _.extend(_.omit(this.props, 'messages', 'path', 'component'),
-                    {message: this.getIntlMessage(this.props.path)});
+    let {
+      messages,
+      path,
+      component,
+      ...values
+    } = this.props;
+
+    return {id: path, values: values};
   },
 
   render() {
@@ -49,7 +54,7 @@ class RestIntl {
 RestIntl.currency = function(value, currency, props = {}) {
   props.style = "currency"
   props.currency = currency;
-  props = _.extend({
+  props = Object.assign({
     locales: Config.get('currencyLocale') || Config.get('locale') ||
     navigator.language || navigator.userLanguage,
     maximumFractionDigits: 2,

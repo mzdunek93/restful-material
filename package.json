@@ -54,11 +54,15 @@
   },
   "dependencies": {
     "babel": "^5.4.3",
-    "react": "*",
-    "react-dom": "*",
-    "react-intl": "~1.2.2",
+    "intl": "*",
+    "intl-locales-supported": "*",
     "react-tap-event-plugin": "*",
     "material-ui": "0.14.0",
     "underscore": "~1.8.3"
+  },
+  "peerDependencies": {
+    "react": "~0.14.0",
+    "react-dom": "~0.14.0",
+    "react-intl": "next"
   }
 }
