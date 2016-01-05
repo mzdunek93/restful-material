@@ -68,7 +68,7 @@ module.exports = React.createClass({
     return <TextField {...this.props}
                       ref='field'
                       readOnly={this.context.readOnly}
-                      errorText={this.props.model.errors[this.props.attribute]}
+                      errorText={this.props.model.errors[this.props.attribute] || this.props.errorText}
                       valueLink={this.valueLink()}
                       floatingLabelText={this.props.label} />
   }
