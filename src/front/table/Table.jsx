@@ -24,6 +24,10 @@ module.exports = React.createClass({
     resources: React.PropTypes.array.isRequired
   },
 
+  contextTypes: {
+    intl: React.PropTypes.object
+  },
+
   getDefaultProps() {
     return {
       tableProps: {
@@ -94,8 +98,10 @@ module.exports = React.createClass({
   },
 
   translateMaybe(title) {
-    if(this.props.messages && title)
-      return this.getIntlMessage(title);
+    if(this.props.messagesIdPrefix && title)
+      return this.context.intl.formatMessage({
+        id: `${this.props.messagesIdPrefix}.${title}`
+      });
     else
       return title;
   },
