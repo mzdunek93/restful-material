@@ -57,6 +57,7 @@ module.exports = React.createClass({
     return {
       perPage: parseInt(window.localStorage.getItem('perPage') || this.props.perPage),
       page: this.props.page,
+      filtered: this.props.resources,
       activeFilters: [],
       resourcesFn: this.props.pagination ? this.subset : this.all,
       controlsFn: this.props.pagination ? this.controls : ()=> <span />,
@@ -68,7 +69,7 @@ module.exports = React.createClass({
   },
 
   getResource(rowIndex) {
-    return this.resources()[rowIndex];
+    return this.state.filtered[rowIndex];
   },
 
   columnSpec(title) {
@@ -90,7 +91,7 @@ module.exports = React.createClass({
 
   perPageChange(perPage) {
     window.localStorage.setItem('perPage', perPage);
-    var length = this.resources().length;
+    var length = this.state.filtered.length;
     if((perPage * this.state.page) > length)
       this.setState({perPage: perPage, page: parseInt(length / perPage)});
     else
@@ -301,15 +302,8 @@ module.exports = React.createClass({
     return resources;
   },
 
-  resources() {
-    return this.state.filtered || this.props.resources;;
-  },
-
   render() {
-    var resources = this.sort(this.resources());
-
-    if(!resources)
-      return <div />
+    var resources = this.sort(this.state.filtered);
 
     return (
       <div>
