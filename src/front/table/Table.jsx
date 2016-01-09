@@ -261,16 +261,24 @@ module.exports = React.createClass({
     return [a, b];
   },
 
-  sortAsc(key, a, b) {
+  sortStringAsc(key, a, b) {
     [a, b] = this.sanitizeForSorting(key, a, b);
 
     return a.toString().localeCompare(b.toString());
   },
 
-  sortDesc(key, a, b){
+  sortStringDesc(key, a, b) {
     [a, b] = this.sanitizeForSorting(key, a, b);
 
     return b.toString().localeCompare(a.toString());
+  },
+
+  sortDateAsc(key, a, b) {
+    return a.get(key) - b.get(key);
+  },
+
+  sortDateDesc(key, a, b) {
+    return b.get(key) - a.get(key);
   },
 
   sort(resources) {
@@ -279,10 +287,16 @@ module.exports = React.createClass({
       return resources;
 
     let spec = this.columnSpec(this.state.sorting.title);
+    let isDate = false;
+    let first = resources[0];
+    if(first)
+      isDate = first.get(spec.key) instanceof Date;
 
+    let asc  = isDate ? this.sortDateAsc  : this.sortStringAsc;
+    let desc = isDate ? this.sortDateDesc : this.sortStringDesc;
     return resources.sort(this.state.sorting.asc ?
-                          this.sortAsc.bind(this, spec.key) :
-                          this.sortDesc.bind(this, spec.key));
+                          asc.bind(this, spec.key) :
+                          desc.bind(this, spec.key));
   },
 
   subset(resources) {
@@ -303,7 +317,7 @@ module.exports = React.createClass({
   },
 
   render() {
-    var resources = this.sort(this.state.filtered);
+    var resources = this.sort(this.state.filtered || []);
 
     return (
       <div>
