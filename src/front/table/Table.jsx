@@ -68,6 +68,11 @@ module.exports = React.createClass({
     }
   },
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.resources)
+      this.setState({filtered: nextProps.resources});
+  },
+
   getResource(rowIndex) {
     return this.state.filtered[rowIndex];
   },
