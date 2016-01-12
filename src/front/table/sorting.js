@@ -24,7 +24,7 @@ let sanitizeForSorting = (key, a, b, fallback) => {
 
 let sanitizeForSortingCurrency = (key, a, b) => {
   [a, b] = sanitizeForSorting(key, a, b, '0 PLN');
-  let re = /^\s*(\d+[,.]?\d*)\s*[A-Z]{3}\s*$/;
+  let re = /^\s*(\d+[,.]?\d*)\s*[A-Za-z]{0,3}\s*$/;
   a = (a.match(re) || [])[1];
   b = (b.match(re) || [])[1];
 
