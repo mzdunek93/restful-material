@@ -8,6 +8,7 @@ import { Table,
          TableRow,
          TableRowColumn } from "material-ui";
 import Controls from "./Controls";
+import { determineSortingFns } from "./sorting";
 import Config from "../../back/Config";
 import { without, uniq, isDate, extend, isFunction, isObject } from "underscore";
 
@@ -257,88 +258,13 @@ module.exports = React.createClass({
     });
   },
 
-  sanitizeForSorting(key, a, b, fallback) {
-    a = a.get(key);
-    b = b.get(key);
-    if(a === undefined || a === null) a = fallback;
-    if(b === undefined || b === null) b = fallback;
-
-    return [a, b];
-  },
-
-  sanitizeForSortingCurrency(key, a, b) {
-    [a, b] = this.sanitizeForSorting(key, a, b, '0 PLN');
-    let re = /^\s*(\d+[,.]?\d*)\s*[A-Z]{3}\s*$/;
-    a = (a.match(re) || [])[1];
-    b = (b.match(re) || [])[1];
-
-    return [
-      //in js "" evaluates to false
-      parseFloat((a || '0').replace(/,/, ".")),
-      parseFloat((b || '0').replace(/,/, "."))
-    ];
-  },
-
-  sortStringAsc(key, a, b) {
-    [a, b] = this.sanitizeForSorting(key, a, b, '');
-
-    return a.toString().localeCompare(b.toString());
-  },
-
-  sortStringDesc(key, a, b) {
-    [a, b] = this.sanitizeForSorting(key, a, b, '');
-
-    return b.toString().localeCompare(a.toString());
-  },
-
-  sortDateAsc(key, a, b) {
-    return a.get(key) - b.get(key);
-  },
-
-  sortDateDesc(key, a, b) {
-    return b.get(key) - a.get(key);
-  },
-
-  sortIntegerAsc(key, a, b) {
-    [a, b] = this.sanitizeForSorting(key, a, b, 0);
-
-    return parseInt(a) - parseInt(b);
-  },
-
-  sortIntegerDesc(key, a, b) {
-    [a, b] = this.sanitizeForSorting(key, a, b, 0);
-
-    return parseInt(b) - parseInt(a);
-  },
-
-  sortCurrencyAsc(key, a, b) {
-    [a, b] = this.sanitizeForSortingCurrency(key, a, b);
-
-    return a - b;
-  },
-
-  sortCurrencyDesc(key, a, b) {
-    [a, b] = this.sanitizeForSortingCurrency(key, a, b);
-
-    return b - a;
-  },
-
-  determineSortingFns(spec) {
-    switch(spec.type) {
-      case "string":   return [this.sortStringAsc,   this.sortStringDesc];
-      case "date":     return [this.sortDateAsc,     this.sortDateDesc];
-      case "integer":  return [this.sortIntegerAsc,  this.sortIntegerDesc];
-      case "currency": return [this.sortCurrencyAsc, this.sortCurrencyDesc];
-    }
-  },
-
   sort(resources) {
     let sorting = this.state.sorting
     if(!sorting.title)
       return resources;
 
     let spec = this.columnSpec(this.state.sorting.title);
-    let [asc, desc]  = this.determineSortingFns(spec);
+    let [asc, desc]  = determineSortingFns(spec);
     return resources.sort(this.state.sorting.asc ?
                           asc.bind(this, spec.key) :
                           desc.bind(this, spec.key));
