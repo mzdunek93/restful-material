@@ -20,7 +20,8 @@ module.exports = React.createClass({
   },
 
   getInitialState() {
-    if(this.props.model.isBlank(this.props.attribute))
+    let value = this.props.model.get(this.props.attribute);
+    if(value === undefined || value === null || value === '')
       throw new Error(`The attribute "${this.props.attribute}" of ${this.props.model} is not set`);
 
     return {
