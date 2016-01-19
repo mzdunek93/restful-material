@@ -50,6 +50,7 @@ var CountriesSelectField = React.createClass({
                     dataSource={this.items()}
                     searchText={value.text}
                     onNewRequest={this._setAttribute}
+                    floatingLabelText={this.props.label}
                     ref="menu"
                     className="country-select" />
     );
