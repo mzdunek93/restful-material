@@ -1,5 +1,5 @@
 import React from "react";
-import { SelectField, TextField } from "material-ui";
+import { SelectField, TextField, MenuItem } from "material-ui";
 
 module.exports = React.createClass({
   propTypes: {
@@ -49,9 +49,9 @@ module.exports = React.createClass({
       this.setState({value: nextProps.model.get(nextProps.attribute)});
   },
 
-  _onChange(_, __, item) {
-    this.setState({value: item.payload}, () =>
-      this.props.model.set(this.props.attribute, item.payload)
+  _onChange(_, __, value) {
+    this.setState({value: value}, () =>
+      this.props.model.set(this.props.attribute, value)
     );
   },
 
@@ -70,8 +70,13 @@ module.exports = React.createClass({
                        errorText={this.props.model.errors[this.props.attribute]}
                        value={this.state.value}
                        onChange={this._onChange}
-                       menuItems={items}
-                       className={this.props.className} />
+                       className={this.props.className} >
+            {items.map((item, i) =>
+               <MenuItem key={i}
+                         primaryText={item.text}
+                         value={item.payload} />
+             )}
+          </SelectField>
         </span>
     )
   }
