@@ -183,6 +183,8 @@ module.exports = React.createClass({
       return (
         <TextField ref={title}
                    autoComplete="false"
+                   hintText="filter"
+                   hintStyle={{fontSize: "50%"}}
                    style={{display: 'table-cell'}}
                    onChange={this.updateFilter.bind(this, title)} />
       );
