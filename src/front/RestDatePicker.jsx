@@ -12,6 +12,7 @@ module.exports = React.createClass({
     if(!(date instanceof Date))
       date = new Date(date);
 
+    date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     return date.toLocaleDateString(Config.get('locale') || 'fr-FR');
   },
 
