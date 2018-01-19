@@ -11,13 +11,14 @@ import Controls from "./Controls";
 import { determineSortingFns } from "./sorting";
 import Config from "../../back/Config";
 import { without, uniq, isDate, extend, isFunction, isObject } from "underscore";
+import createReactClass from "create-react-class";
 
 const sortingIndicatorMap = {
   true: "▴",
   false: "▾"
 }
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   mixins: [IntlMixin],
 
   propTypes: {

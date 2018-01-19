@@ -4,9 +4,9 @@ import HelpOutlineIcon from "material-ui/svg-icons/action/help-outline";
 import FileDownloadIcon from "material-ui/svg-icons/file/file-download";
 import AddIcon from "material-ui/svg-icons/content/add";
 import DeleteIcon from "material-ui/svg-icons/action/delete";
+import createReactClass from "create-react-class";
 
-
-var Button = React.createClass({
+var Button = createReactClass({
   render(){
     return(
       <IconButton {...this.props} >
@@ -16,13 +16,13 @@ var Button = React.createClass({
   }
 });
 
-var Delete = React.createClass({
+var Delete = createReactClass({
   render(){
     return <Button onClick={this.props.onClick} svg={<DeleteIcon />} />;
   }
 });
 
-var Download = React.createClass({
+var Download = createReactClass({
   click(){
     window.open(this.props.url, "_blank");
   },
@@ -32,13 +32,13 @@ var Download = React.createClass({
   }
 });
 
-var Help = React.createClass({
+var Help = createReactClass({
   render() {
     return <Button {...this.props} svg={<HelpOutlineIcon />} />;
   }
 });
 
-var FloatingAdd = React.createClass({
+var FloatingAdd = createReactClass({
   render() {
     return (
       <FloatingActionButton

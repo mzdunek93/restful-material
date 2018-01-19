@@ -1,7 +1,8 @@
 import React from "react";
 import { Snackbar } from "material-ui";
+import createReactClass from "create-react-class";
 
-var Component = React.createClass({
+var Component = createReactClass({
   getInitialState() {
     return {message: '', action: null, open: false};
   },

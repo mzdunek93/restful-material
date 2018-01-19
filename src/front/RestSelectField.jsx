@@ -1,7 +1,8 @@
 import React from "react";
 import { SelectField, TextField, MenuItem } from "material-ui";
+import createReactClass from "create-react-class";
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   propTypes: {
     attribute: React.PropTypes.string.isRequired,
     items: React.PropTypes.array.isRequired,

@@ -1,7 +1,8 @@
 import React from "react";
 import { Dialog, FlatButton } from "material-ui";
+import createReactClass from "create-react-class";
 
-var Component = React.createClass({
+var Component = createReactClass({
   getInitialState() {
     return {
       messages: [''],

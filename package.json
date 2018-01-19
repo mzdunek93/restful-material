@@ -61,7 +61,8 @@
     "intl-locales-supported": "*",
     "material-ui": "0.20.0",
     "react-tap-event-plugin": "^3.0.2",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "create-react-class": "^15.6.2"
   },
   "peerDependencies": {
     "react": "^16.0.0",

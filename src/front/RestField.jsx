@@ -1,7 +1,8 @@
 import React from "react";
 import { TextField } from "material-ui";
+import createReactClass from "create-react-class";
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   propTypes: {
     attribute: React.PropTypes.string,
     model: React.PropTypes.object,

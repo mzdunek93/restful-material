@@ -2,8 +2,9 @@ import React from "react";
 import { IntlMixin } from "react-intl";
 import { FormattedMessage, FormattedHTMLMessage, FormattedNumber } from "react-intl";
 import Config from "./Config";
+import createReactClass from "create-react-class";
 
-var MessageComponent = React.createClass({
+var MessageComponent = createReactClass({
   mixins: [IntlMixin],
 
   getProps() {

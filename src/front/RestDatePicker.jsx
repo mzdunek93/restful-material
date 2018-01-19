@@ -1,7 +1,8 @@
 import React from "react";
 import { DatePicker, TextField } from "material-ui";
+import createReactClass from "create-react-class";
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   contextTypes: {
     readOnly: React.PropTypes.bool
   },

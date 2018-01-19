@@ -1,7 +1,8 @@
 import React from "react";
 import { Checkbox } from "material-ui";
+import createReactClass from "create-react-class";
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   getInitialState() {
     return {
       checked: !!this.props.model.get(this.props.attribute)

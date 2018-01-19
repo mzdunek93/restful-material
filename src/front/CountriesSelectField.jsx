@@ -1,7 +1,8 @@
 import React from "react";
 import { AutoComplete, TextField } from "material-ui";
+import createReactClass from "create-react-class";
 
-var CountriesSelectField = React.createClass({
+var CountriesSelectField = createReactClass({
   propTypes: {
     model: React.PropTypes.object
   },

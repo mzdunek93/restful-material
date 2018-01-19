@@ -6,8 +6,9 @@ import { Toolbar,
          Styles,
          Mixins,
          FloatingActionButton } from "material-ui";
+import createReactClass from "create-react-class";
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   mixins: [Mixins.StylePropable ],
 
   propTypes: {
