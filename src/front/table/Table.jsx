@@ -12,6 +12,7 @@ import { determineSortingFns } from "./sorting";
 import Config from "../../back/Config";
 import { without, uniq, isDate, extend, isFunction, isObject } from "underscore";
 import createReactClass from "create-react-class";
+import PropTypes from "prop-types";
 
 const sortingIndicatorMap = {
   true: "▴",
@@ -22,12 +23,12 @@ module.exports = createReactClass({
   mixins: [IntlMixin],
 
   propTypes: {
-    spec: React.PropTypes.object.isRequired,
-    resources: React.PropTypes.array.isRequired
+    spec: PropTypes.object.isRequired,
+    resources: PropTypes.array.isRequired
   },
 
   contextTypes: {
-    intl: React.PropTypes.object
+    intl: PropTypes.object
   },
 
   getDefaultProps() {

@@ -6,7 +6,7 @@ var ThemeManager = new Styles.ThemeManager();
 
 var ContextWrapper = React.createClass({
   childContextTypes: {
-    muiTheme: React.PropTypes.object
+    muiTheme: PropTypes.object
   },
   getChildContext: function() {
     return {muiTheme: ThemeManager.getCurrentTheme()}

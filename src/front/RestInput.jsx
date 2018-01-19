@@ -6,13 +6,14 @@ import RestRadioButtonGroup from "./RestRadioButtonGroup";
 import RestCheckbox from "./RestCheckbox";
 import CountriesSelectField from "./CountriesSelectField";
 import createReactClass from "create-react-class";
+import PropTypes from "prop-types";
 
 var RestInput = createReactClass({
   propTypes: {
-    model: React.PropTypes.object.isRequired,
-    label: React.PropTypes.any,
-    kind: React.PropTypes.string.isRequired,
-    attribute: React.PropTypes.string.isRequired
+    model: PropTypes.object.isRequired,
+    label: PropTypes.any,
+    kind: PropTypes.string.isRequired,
+    attribute: PropTypes.string.isRequired
   },
 
   getValue() {

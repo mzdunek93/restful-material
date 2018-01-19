@@ -1,14 +1,15 @@
 import React from "react";
 import { AutoComplete, TextField } from "material-ui";
 import createReactClass from "create-react-class";
+import PropTypes from "prop-types";
 
 var CountriesSelectField = createReactClass({
   propTypes: {
-    model: React.PropTypes.object
+    model: PropTypes.object
   },
 
   contextTypes: {
-    readOnly: React.PropTypes.bool
+    readOnly: PropTypes.bool
   },
 
   getValue() {

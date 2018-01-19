@@ -7,16 +7,17 @@ import { Toolbar,
          Mixins,
          FloatingActionButton } from "material-ui";
 import createReactClass from "create-react-class";
+import PropTypes from "prop-types";
 
 module.exports = createReactClass({
   mixins: [Mixins.StylePropable ],
 
   propTypes: {
-    onPageChange: React.PropTypes.func.isRequired,
-    onPerPageChange: React.PropTypes.func.isRequired,
-    count: React.PropTypes.number.isRequired,
-    page: React.PropTypes.number.isRequired,
-    perPage: React.PropTypes.number.isRequired
+    onPageChange: PropTypes.func.isRequired,
+    onPerPageChange: PropTypes.func.isRequired,
+    count: PropTypes.number.isRequired,
+    page: PropTypes.number.isRequired,
+    perPage: PropTypes.number.isRequired
   },
 
   perPageChange(e, n) {

@@ -1,10 +1,11 @@
 import React from "react";
 import { DatePicker, TextField } from "material-ui";
 import createReactClass from "create-react-class";
+import PropTypes from "prop-types";
 
 module.exports = createReactClass({
   contextTypes: {
-    readOnly: React.PropTypes.bool
+    readOnly: PropTypes.bool
   },
 
   dateFormat(date) {

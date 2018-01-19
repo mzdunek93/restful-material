@@ -1,6 +1,7 @@
 import React from "react";
 import { Dialog, FlatButton } from "material-ui";
 import createReactClass from "create-react-class";
+import PropTypes from "prop-types";
 
 var Component = createReactClass({
   getInitialState() {
@@ -52,7 +53,7 @@ var Component = createReactClass({
 
 var Mixin = {
   childContextTypes: {
-    confirm: React.PropTypes.object
+    confirm: PropTypes.object
   },
 
   getChildContext(){

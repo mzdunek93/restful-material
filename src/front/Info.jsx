@@ -1,6 +1,7 @@
 import React from "react";
 import { Snackbar } from "material-ui";
 import createReactClass from "create-react-class";
+import PropTypes from "prop-types";
 
 var Component = createReactClass({
   getInitialState() {
@@ -41,7 +42,7 @@ var Component = createReactClass({
 
 var Mixin = {
   childContextTypes: {
-    info: React.PropTypes.object
+    info: PropTypes.object
   },
 
   getChildContext(){
