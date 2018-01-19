@@ -1,9 +1,9 @@
 import React from "react";
 import { IconButton, SvgIcon, FloatingActionButton } from "material-ui";
-import HelpOutlineIcon from "material-ui/lib/svg-icons/action/help-outline";
-import FileDownloadIcon from "material-ui/lib/svg-icons/file/file-download";
-import AddIcon from "material-ui/lib/svg-icons/content/add";
-import DeleteIcon from "material-ui/lib/svg-icons/action/delete";
+import HelpOutlineIcon from "material-ui/svg-icons/action/help-outline";
+import FileDownloadIcon from "material-ui/svg-icons/file/file-download";
+import AddIcon from "material-ui/svg-icons/content/add";
+import DeleteIcon from "material-ui/svg-icons/action/delete";
 
 
 var Button = React.createClass({

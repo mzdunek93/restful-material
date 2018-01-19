@@ -1,6 +1,6 @@
 {
   "name": "restful-material",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "./lib",
   "repository": {
@@ -11,7 +11,7 @@
     "test": "jest",
     "test:watch": "nodemon -w __tests__ -w ./src -e js,jsx -x npm test",
     "prebuild": "rm -rf lib",
-    "build": "./node_modules/.bin/babel --stage 1 ./src --out-dir ./lib",
+    "build": "./node_modules/.bin/babel --presets stage-1,env,react ./src --out-dir ./lib",
     "postinstall": "npm run build"
   },
   "jest": {
@@ -45,24 +45,27 @@
   },
   "homepage": "https://github.com/asok/restful-material",
   "devDependencies": {
-    "babel-jest": "~4.0.0",
+    "babel-jest": "~22.1.0",
     "fakexmlhttprequest": "0.0.1",
-    "jest-cli": "^0.4.2",
-    "native-promise-only": "^0.7.8-a",
+    "jest-cli": "^22.1.1",
+    "native-promise-only": "^0.8.1",
     "nodemon": "^1.3.7",
     "pprint": "0.0.1"
   },
   "dependencies": {
-    "babel": "^5.4.3",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "intl": "*",
     "intl-locales-supported": "*",
-    "react-tap-event-plugin": "*",
-    "material-ui": "0.14.0",
+    "material-ui": "0.20.0",
+    "react-tap-event-plugin": "^3.0.2",
     "underscore": "~1.8.3"
   },
   "peerDependencies": {
-    "react": "~0.14.0",
-    "react-dom": "~0.14.0",
-    "react-intl": "2.0.0-beta-2"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-intl": "^2.4.0"
   }
 }
