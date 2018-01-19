@@ -4,14 +4,11 @@ import { Toolbar,
          ToolbarGroup,
          ToolbarTitle,
          Styles,
-         Mixins,
          FloatingActionButton } from "material-ui";
 import createReactClass from "create-react-class";
 import PropTypes from "prop-types";
 
 module.exports = createReactClass({
-  mixins: [Mixins.StylePropable ],
-
   propTypes: {
     onPageChange: PropTypes.func.isRequired,
     onPerPageChange: PropTypes.func.isRequired,
